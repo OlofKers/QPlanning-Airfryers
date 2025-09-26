@@ -1,0 +1,26 @@
+@startuml UCDiagram1
+left to right direction
+
+actor "Planner" as Planner
+actor "Medewerker" as Medewerker
+actor "Klant" as Klant
+
+rectangle Boekingssysteem {
+  usecase "UC1: Boeking toevoegen" as UC1
+  usecase "UC2: Boeking verwijderen" as UC2
+  usecase "UC3: Boeking aanpassen" as UC3
+  usecase "UC4: Boekingenlijst filteren" as UC4
+  usecase "UC5: Boekingenlijst exporteren naar Excel" as UC5
+}
+
+Planner --> UC1
+Planner --> UC2
+Planner --> UC3
+Planner --> UC4
+Planner --> UC5
+
+Medewerker --> UC1
+Medewerker --> UC3
+Medewerker --> UC4
+
+@enduml
