@@ -23,7 +23,7 @@ public class AddKlantUseCaseUnitTests
         {
             Naam = "TestKlant",
             Boekjaar = 2025,
-            Budget = 1000
+            Budget = 1000 // geldige integer
         };
 
         // Act
@@ -45,7 +45,7 @@ public class AddKlantUseCaseUnitTests
         {
             Naam = "TestKlant",
             Boekjaar = 2025,
-            Budget = -10 // negative value, should be validated
+            Budget = -10 // negatieve integer
         };
 
         // Act

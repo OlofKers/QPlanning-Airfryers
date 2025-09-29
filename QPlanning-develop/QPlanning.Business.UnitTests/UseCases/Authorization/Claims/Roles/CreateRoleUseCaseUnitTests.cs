@@ -44,4 +44,40 @@ public class RoleUseCaseUnitTests
         // Assert
         Assert.True(result.Success);
     }
+
+    [Fact]
+    public async Task CreateRole_Handle_Should_Fail_When_NotAllowed()
+    {
+        // Arrange
+        var mockService = new Mock<IAuthorizationService>();
+        mockService.Setup(s => s.CreateClaimRole(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(new BaseResponse("Not allowed", false));
+        var useCase = new CreateRoleUseCase(mockService.Object);
+        var command = new CreateRoleCommand { Email = "test@example.com", Role = "Admin" };
+
+        // Act
+        var result = await useCase.Handle(command, CancellationToken.None);
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Equal("Not allowed", result.Message);
+    }
+
+    [Fact]
+    public async Task DeleteRole_Handle_Should_Fail_When_NotAllowed()
+    {
+        // Arrange
+        var mockService = new Mock<IAuthorizationService>();
+        mockService.Setup(s => s.DeleteClaimRole(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(new BaseResponse("Not allowed", false));
+        var useCase = new DeleteRoleUseCase(mockService.Object);
+        var command = new DeleteRoleCommand { Email = "test@example.com", Role = "Admin" };
+
+        // Act
+        var result = await useCase.Handle(command, CancellationToken.None);
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Equal("Not allowed", result.Message);
+    }
 }

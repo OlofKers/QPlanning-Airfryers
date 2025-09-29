@@ -46,4 +46,38 @@ public class BoekingUseCaseUnitTests
         // Assert
         Assert.NotNull(result);
     }
+
+    [Fact]
+    public async Task AddBoekingen_With_Empty_List_Should_Fail()
+    {
+        // Arrange
+        var mockService = new Mock<IBoekingService>();
+        mockService.Setup(s => s.AddBoekingen(It.Is<List<DomainModelBoeking>>(l => l.Count == 0)))
+            .ReturnsAsync(new BoekingResponse(0, false, "Niet toegestaan"));
+        var useCase = new AddBoekingUseCase(mockService.Object);
+        var command = new AddBoekingCommand { MedewerkerIds = new List<int>(), Jaar = 2025 };
+
+        // Act
+        var result = await useCase.Handle(command, CancellationToken.None);
+
+        // Assert
+        Assert.False(result.Success);
+    }
+
+    [Fact]
+    public async Task UpdateBoeking_With_Invalid_MedewerkerId_Should_Fail()
+    {
+        // Arrange
+        var mockService = new Mock<IBoekingService>();
+        mockService.Setup(s => s.UpdateBoeking(It.Is<DomainModelBoeking>(b => b.MedewerkerId == 0)))
+            .ReturnsAsync(new BoekingResponse(0, false, "Niet toegestaan"));
+        var useCase = new UpdateBoekingUseCase(mockService.Object);
+        var command = new UpdateBoekingCommand { Jaar = 2025, MedewerkerId = 0 };
+
+        // Act
+        var result = await useCase.Handle(command, CancellationToken.None);
+
+        // Assert
+        Assert.False(result.Success);
+    }
 }
