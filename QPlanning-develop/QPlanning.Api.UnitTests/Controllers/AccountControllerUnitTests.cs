@@ -8,27 +8,218 @@ using Xunit;
 using QPlanning.Api.Controllers;
 using QPlanning.Business.Dto.Base.UseCaseResponses;
 using QPlanning.Business.Dto.Commands;
+using QPlanning.Business.UseCases.Authentication.Account.Update.Dto.Command;
+using QPlanning.Business.UseCases.Authorization.Claims.Roles.Create.Dto.Command;
+using QPlanning.Business.UseCases.Authorization.Claims.Roles.Delete.Dto.Command;
 
 namespace QPlanning.Api.UnitTests.Controllers
 {
     public class AccountControllerUnitTests
     {
         [Fact]
-        public async void CreateUser_Post_Returns_Ok_When_Mediator_Send_Is_Called_Correctly()
+        public async Task Add_Returns_Ok_When_Success()
         {
-            // arrange
+            // Arrange
             var mockMediator = new Mock<IMediator>();
-            mockMediator.Setup(med => med.Send(It.IsAny<CreateUserCommand>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(new BaseResponse("", true)));
-
+            mockMediator.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", true));
             var controller = new AccountController(mockMediator.Object);
 
-            // act
-            var result = await controller.Add(new CreateUserCommand("","","","",""));
+            // Act
+            var result = await controller.Add(new CreateUserCommand("", "", "", "", ""));
 
-            // assert
-            var statusCode = ((OkObjectResult)result).StatusCode;
-            Assert.True(statusCode.HasValue && statusCode.Value == (int)HttpStatusCode.OK);
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Add_Returns_BadRequest_When_Failure()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", false));
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = await controller.Add(new CreateUserCommand("", "", "", "", ""));
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Update_Returns_Ok_When_Success()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", true));
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = await controller.Update(new UpdateUserCommand());
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Update_Returns_BadRequest_When_Failure()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", false));
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = await controller.Update(new UpdateUserCommand());
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Delete_Returns_Ok_When_Success()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<DeleteUserCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", true));
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = await controller.Delete(new DeleteUserCommand());
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Delete_Returns_BadRequest_When_Failure()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<DeleteUserCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", false));
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = await controller.Delete(new DeleteUserCommand());
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task ResetPassword_Returns_Ok_When_Success()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<ResetPasswordCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", true));
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = await controller.ResetPassword(new ResetPasswordCommand());
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task ResetPassword_Returns_BadRequest_When_Failure()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<ResetPasswordCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", false));
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = await controller.ResetPassword(new ResetPasswordCommand());
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public void GetAllRoles_Returns_Ok()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = controller.GetAllRoles();
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task AddClaimRoleToUser_Returns_Ok_When_Success()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<CreateRoleCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", true));
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = await controller.AddClaimRoleToUser(new CreateRoleCommand());
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task AddClaimRoleToUser_Returns_BadRequest_When_Failure()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<CreateRoleCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", false));
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = await controller.AddClaimRoleToUser(new CreateRoleCommand());
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task RemoveClaimRoleToUser_Returns_Ok_When_Success()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<DeleteRoleCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", true));
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = await controller.RemoveClaimRoleToUser(new DeleteRoleCommand());
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task RemoveClaimRoleToUser_Returns_BadRequest_When_Failure()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<DeleteRoleCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", false));
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = await controller.RemoveClaimRoleToUser(new DeleteRoleCommand());
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result);
         }
     }
 }
