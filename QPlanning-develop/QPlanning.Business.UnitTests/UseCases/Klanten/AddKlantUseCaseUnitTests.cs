@@ -12,10 +12,11 @@ using QPlanning.Business.UseCases.Klanten.Edit.Dto.Commands;
 public class AddKlantUseCaseUnitTests
 {
     [Fact]
-    public async Task Handle_Should_Succeed_With_Valid_Budget()
+    public async Task Handle_Should_Fail_With_Negative_Budget()
     {
         // Arrange
         var mockService = new Mock<IKlantDomainService>();
+        // Simuleer huidige situatie: service geeft altijd success = true terug
         mockService.Setup(s => s.AddKlant(It.IsAny<AddKlantCommand>()))
             .ReturnsAsync(new BaseResponse("", true));
         var useCase = new AddKlantUseCase(mockService.Object);
@@ -23,35 +24,14 @@ public class AddKlantUseCaseUnitTests
         {
             Naam = "TestKlant",
             Boekjaar = 2025,
-            Budget = 1000 // geldige integer
+            Budget = -10
         };
 
         // Act
         var result = await useCase.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.True(result.Success);
-    }
-
-    [Fact]
-    public async Task Handle_Should_Fail_With_Negative_Budget()
-    {
-        // Arrange
-        var mockService = new Mock<IKlantDomainService>();
-        mockService.Setup(s => s.AddKlant(It.IsAny<AddKlantCommand>()))
-            .ReturnsAsync(new BaseResponse("", false));
-        var useCase = new AddKlantUseCase(mockService.Object);
-        var command = new AddKlantCommand
-        {
-            Naam = "TestKlant",
-            Boekjaar = 2025,
-            Budget = -10 // negatieve integer
-        };
-
-        // Act
-        var result = await useCase.Handle(command, CancellationToken.None);
-
-        // Assert
+        // Test faalt als de actie tóch lukt (want dat mag niet)
         Assert.False(result.Success);
     }
 
@@ -61,7 +41,7 @@ public class AddKlantUseCaseUnitTests
         // Arrange
         var mockService = new Mock<IKlantDomainService>();
         mockService.Setup(s => s.AddKlant(It.IsAny<AddKlantCommand>()))
-            .ReturnsAsync(new BaseResponse("", false));
+            .ReturnsAsync(new BaseResponse("", true));
         var useCase = new AddKlantUseCase(mockService.Object);
         var command = new AddKlantCommand
         {
@@ -73,7 +53,27 @@ public class AddKlantUseCaseUnitTests
         // Act
         var result = await useCase.Handle(command, CancellationToken.None);
 
-        // Assert
+        Assert.False(result.Success);
+    }
+
+    [Fact]
+    public async Task Handle_Should_Fail_With_Empty_Naam()
+    {
+        // Arrange
+        var mockService = new Mock<IKlantDomainService>();
+        mockService.Setup(s => s.AddKlant(It.IsAny<AddKlantCommand>()))
+            .ReturnsAsync(new BaseResponse("", true));
+        var useCase = new AddKlantUseCase(mockService.Object);
+        var command = new AddKlantCommand
+        {
+            Naam = "",
+            Boekjaar = 2025,
+            Budget = 1000
+        };
+
+        // Act
+        var result = await useCase.Handle(command, CancellationToken.None);
+
         Assert.False(result.Success);
     }
 

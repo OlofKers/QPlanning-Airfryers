@@ -34,13 +34,33 @@ public class EditKlantMedewerkerUseCaseUnitTests
     public async Task EditKlant_Handle_Should_Fail_With_Empty_Naam()
     {
         var mockService = new Mock<IKlantDomainService>();
+        // Simuleer huidige situatie: service geeft altijd success = true terug
         mockService.Setup(s => s.EditKlant(It.IsAny<EditKlantCommand>()))
-            .ReturnsAsync(new BaseResponse("", false));
+            .ReturnsAsync(new BaseResponse("", true));
         var useCase = new EditKlantUseCase(mockService.Object);
         var command = new EditKlantCommand
         {
             Id = 1,
             Naam = ""
+        };
+
+        var result = await useCase.Handle(command, CancellationToken.None);
+
+        // Test faalt als de actie tóch lukt (want dat mag niet)
+        Assert.False(result.Success);
+    }
+
+    [Fact]
+    public async Task EditKlant_Handle_Should_Fail_With_Invalid_Id()
+    {
+        var mockService = new Mock<IKlantDomainService>();
+        mockService.Setup(s => s.EditKlant(It.IsAny<EditKlantCommand>()))
+            .ReturnsAsync(new BaseResponse("", true));
+        var useCase = new EditKlantUseCase(mockService.Object);
+        var command = new EditKlantCommand
+        {
+            Id = 0,
+            Naam = "TestKlant"
         };
 
         var result = await useCase.Handle(command, CancellationToken.None);
@@ -92,4 +112,91 @@ public class EditKlantMedewerkerUseCaseUnitTests
         Assert.False(result.Success);
     }
 
+    [Fact]
+    public async Task EditMedewerker_Handle_Should_Fail_With_Empty_Voornaam()
+    {
+        var mockService = new Mock<IMedewerkerService>();
+        mockService.Setup(s => s.EditMewerker(It.IsAny<EditMedewerkerCommand>()))
+            .ReturnsAsync(new BaseResponse("", true));
+        var useCase = new EditMedewerkerUseCase(mockService.Object);
+        var command = new EditMedewerkerCommand
+        {
+            Id = 1,
+            Voornaam = "",
+            Achternaam = "Medewerker",
+            Email = "test@example.com",
+            TeamId = 1,
+            IsActief = true
+        };
+
+        var result = await useCase.Handle(command, CancellationToken.None);
+
+        Assert.False(result.Success);
+    }
+
+    [Fact]
+    public async Task EditMedewerker_Handle_Should_Fail_With_Invalid_Email()
+    {
+        var mockService = new Mock<IMedewerkerService>();
+        mockService.Setup(s => s.EditMewerker(It.IsAny<EditMedewerkerCommand>()))
+            .ReturnsAsync(new BaseResponse("", true));
+        var useCase = new EditMedewerkerUseCase(mockService.Object);
+        var command = new EditMedewerkerCommand
+        {
+            Id = 1,
+            Voornaam = "Test",
+            Achternaam = "Medewerker",
+            Email = "notanemail",
+            TeamId = 1,
+            IsActief = true
+        };
+
+        var result = await useCase.Handle(command, CancellationToken.None);
+
+        Assert.False(result.Success);
+    }
+
+    [Fact]
+    public async Task EditMedewerker_Handle_Should_Fail_With_Invalid_TeamId()
+    {
+        var mockService = new Mock<IMedewerkerService>();
+        mockService.Setup(s => s.EditMewerker(It.IsAny<EditMedewerkerCommand>()))
+            .ReturnsAsync(new BaseResponse("", true));
+        var useCase = new EditMedewerkerUseCase(mockService.Object);
+        var command = new EditMedewerkerCommand
+        {
+            Id = 1,
+            Voornaam = "Test",
+            Achternaam = "Medewerker",
+            Email = "test@example.com",
+            TeamId = 0, // Ongeldig team
+            IsActief = true
+        };
+
+        var result = await useCase.Handle(command, CancellationToken.None);
+
+        Assert.False(result.Success);
+    }
+
+    [Fact]
+    public async Task EditMedewerker_Handle_Should_Fail_With_Negative_Id()
+    {
+        var mockService = new Mock<IMedewerkerService>();
+        mockService.Setup(s => s.EditMewerker(It.IsAny<EditMedewerkerCommand>()))
+            .ReturnsAsync(new BaseResponse("", true));
+        var useCase = new EditMedewerkerUseCase(mockService.Object);
+        var command = new EditMedewerkerCommand
+        {
+            Id = -1,
+            Voornaam = "Test",
+            Achternaam = "Medewerker",
+            Email = "test@example.com",
+            TeamId = 1,
+            IsActief = true
+        };
+
+        var result = await useCase.Handle(command, CancellationToken.None);
+
+        Assert.False(result.Success);
+    }
 }

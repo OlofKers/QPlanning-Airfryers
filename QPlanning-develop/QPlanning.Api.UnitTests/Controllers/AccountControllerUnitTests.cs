@@ -221,5 +221,62 @@ namespace QPlanning.Api.UnitTests.Controllers
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);
         }
+
+        [Fact]
+        public async Task Add_Returns_BadRequest_When_Invalid_Email()
+        {
+            // Arrange
+            var mockMediator = new Mock<IMediator>();
+            // Simuleer huidige situatie: mediator geeft altijd success = true terug
+            mockMediator.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", true));
+            var controller = new AccountController(mockMediator.Object);
+
+            // Act
+            var result = await controller.Add(new CreateUserCommand("username", "notanemail", "password", "role", "extra"));
+
+            // Assert
+            // Test faalt als de actie tóch lukt (want dat mag niet)
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Add_Returns_BadRequest_When_Empty_Username()
+        {
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", true));
+            var controller = new AccountController(mockMediator.Object);
+
+            var result = await controller.Add(new CreateUserCommand("", "test@example.com", "password", "role", "extra"));
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task AddClaimRoleToUser_Returns_BadRequest_When_Invalid_Role()
+        {
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<CreateRoleCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", true));
+            var controller = new AccountController(mockMediator.Object);
+
+            var result = await controller.AddClaimRoleToUser(new CreateRoleCommand { Email = "test@example.com", Role = "" });
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task RemoveClaimRoleToUser_Returns_BadRequest_When_Invalid_Role()
+        {
+            var mockMediator = new Mock<IMediator>();
+            mockMediator.Setup(m => m.Send(It.IsAny<DeleteRoleCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new BaseResponse("", true));
+            var controller = new AccountController(mockMediator.Object);
+
+            var result = await controller.RemoveClaimRoleToUser(new DeleteRoleCommand { Email = "test@example.com", Role = "" });
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
     }
 }
