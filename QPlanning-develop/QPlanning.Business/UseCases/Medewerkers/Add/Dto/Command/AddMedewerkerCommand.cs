@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using MediatR;
 using QPlanning.Business.Interfaces.Base;
 
@@ -9,11 +10,14 @@ namespace QPlanning.Business.UseCases.Medewerkers.Add.Dto.Command
         public string Voornaam { get; set; }
         public string TussenVoegsel { get; set; }
         public string Achternaam { get; set; }
+
+        [EmailAddress(ErrorMessage = "Ongeldig e-mailadres")]
         public string Email { get; set; }
+
         public int? Tarief { get; set; }
         public int? InternTarief { get; set; }
         public int? MedewerkerFunctieId { get; set; }
-        
+
         public List<int> PlanbaarDoorTeamIds { get; set; }
         public int TeamId { get; set; }
     }
