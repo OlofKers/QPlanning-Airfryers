@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using QPlanning.Business.Domain.Entities;
 using QPlanning.Business.Dto.Commands;
 using QPlanning.Business.Dto.Response.UseCase;
-using QPlanning.Business.UseCases.Boeking.Dto;
+using QPlanning.Business.UseCases.Boeking.Add.Dto;
 
 namespace QPlanning.Business.Interfaces.Services
 {

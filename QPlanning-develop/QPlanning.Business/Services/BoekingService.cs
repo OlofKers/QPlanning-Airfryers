@@ -11,7 +11,7 @@ using QPlanning.Business.Dto.Response.UseCase;
 using QPlanning.Business.Helpers.Extensions;
 using QPlanning.Business.Interfaces.Repositories.Gateway;
 using QPlanning.Business.Interfaces.Services;
-using QPlanning.Business.UseCases.Boeking.Dto;
+using QPlanning.Business.UseCases.Boeking.Add.Dto;
 using QPlanning.Business.UseCases.Boeking.Get.Models;
 
 namespace QPlanning.Business.Services
