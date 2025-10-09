@@ -441,30 +441,56 @@ namespace QPlanning.Business.Services
 
         public async Task<BoekingResponse> AddBoeking(DomainModelBoeking domainModelBoeking)
         {
-            var typeBoeking = string.Empty;
+            // Validatie
+            if (!domainModelBoeking.Jaar.HasValue || domainModelBoeking.Jaar.Value <= 0)
+                return new BoekingResponse(0, false, "Jaar is ongeldig");
 
-            typeBoeking = EnhanceFrontEndBoekingData(domainModelBoeking, typeBoeking);
+            if (!domainModelBoeking.Weeknummer.HasValue || domainModelBoeking.Weeknummer.Value <= 0 || domainModelBoeking.Weeknummer.Value > 53)
+                return new BoekingResponse(0, false, "Weeknummer is ongeldig");
 
+            if (domainModelBoeking.Uren <= 0)
+                return new BoekingResponse(0, false, "Uren moeten positief zijn");
+
+            if (domainModelBoeking.Datum != default(DateTime))
+            {
+                var cal = System.Globalization.CultureInfo.CurrentCulture.Calendar;
+                var week = cal.GetWeekOfYear(domainModelBoeking.Datum, System.Globalization.CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+                if (week != domainModelBoeking.Weeknummer.Value || domainModelBoeking.Datum.Year != domainModelBoeking.Jaar.Value)
+                    return new BoekingResponse(0, false, "Datum komt niet overeen met jaar/week");
+            }
+
+            // Frontend enhancement
+            var typeBoeking = EnhanceFrontEndBoekingData(domainModelBoeking, string.Empty);
+
+            // Repository call
             var resultBaseResponse = await _boekingRepository.AddBoeking(domainModelBoeking);
-            return new BoekingResponse (int.Parse(resultBaseResponse.Id), true, $"Het toevoegen van het de nieuwe boeking voor: {typeBoeking} in week: {domainModelBoeking.Weeknummer} en jaar: {domainModelBoeking.Jaar} is gelukt.");
 
+            return new BoekingResponse(
+                int.Parse(resultBaseResponse.Id),
+                true,
+                $"Het toevoegen van het de nieuwe boeking voor: {typeBoeking} in week: {domainModelBoeking.Weeknummer.Value} en jaar: {domainModelBoeking.Jaar.Value} is gelukt."
+            );
         }
 
         public async Task<BoekingResponse> AddBoekingen(List<DomainModelBoeking> domainModelBoekingen)
         {
+            if (domainModelBoekingen == null || domainModelBoekingen.Count == 0)
+                return new BoekingResponse(0, false, "Geen boekingen opgegeven");
+
             var boekingResultaten = new List<string>();
+
             foreach (var domainModelBoeking in domainModelBoekingen)
             {
-                var typeBoeking = string.Empty;
+                var result = await AddBoeking(domainModelBoeking);
+                if (!result.Success)
+                    return result; // Stoppen bij eerste fout
 
-                typeBoeking = EnhanceFrontEndBoekingData(domainModelBoeking, typeBoeking);
-
-                await _boekingRepository.AddBoeking(domainModelBoeking);
-                boekingResultaten.Add($"Het toevoegen van het de nieuwe boeking voor: {typeBoeking} in week: {domainModelBoeking.Weeknummer} en jaar: {domainModelBoeking.Jaar} is gelukt.");
+                boekingResultaten.Add(result.Message);
             }
 
             return new BoekingResponse(1, true, string.Join(',', boekingResultaten));
         }
+
 
         private static string EnhanceFrontEndBoekingData(DomainModelBoeking domainModelBoeking, string typeBoeking)
         {

@@ -70,7 +70,12 @@ public class BoekingServiceEdgeCaseTests
         var boeking = new DomainModelBoeking { Weeknummer = 10, Uren = 8, MedewerkerId = 1 };
 
         // Act
-        var result = await service.AddBoeking(boeking);
+        var result = await service.AddBoeking(new DomainModelBoeking
+        {
+            Weeknummer = 10,
+            Uren = 8,
+            MedewerkerId = 1
+        });
 
         // Assert
         Assert.False(result.Success);
