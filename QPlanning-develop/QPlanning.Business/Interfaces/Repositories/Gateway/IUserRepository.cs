@@ -21,7 +21,7 @@ namespace QPlanning.Business.Interfaces.Repositories.Gateway
 		Task<IList<DomainModelUser>> GetAllUsers();
 		Task<bool> CheckPassword(DomainModelUser domainModelUser, string password);
 		Task<IList<string>> GetAllRolesForUser(string email);
-		Task<CreateRoleResponse> CreateClaimRole(string email, string role);
-		Task<DeleteRoleResponse> DeleteClaimRole(string email, string role);
+		Task<CreateRoleResponse> AddRoleToUser(string email, string role);
+        Task<DeleteRoleResponse> DeleteClaimRole(string email, string role);
 	}
 }

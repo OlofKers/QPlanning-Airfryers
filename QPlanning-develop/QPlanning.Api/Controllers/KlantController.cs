@@ -59,5 +59,7 @@ namespace QPlanning.Api.Controllers
             var result = await Mediator.Send(command);
             return result.Success ? Ok(result) : (ObjectResult)BadRequest(result);
         }
+
+
     }
 }

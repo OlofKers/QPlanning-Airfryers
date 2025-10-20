@@ -5,7 +5,7 @@ namespace QPlanning.Business.Interfaces.Services
 {
     public interface IAuthorizationService
     {
-        Task<BaseResponse> CreateClaimRole(string email, string role);
+        Task<BaseResponse> AddRoleToUser(string email, string role);
         
         Task<BaseResponse> DeleteClaimRole(string email, string role);
     }

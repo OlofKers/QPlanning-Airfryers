@@ -7,6 +7,20 @@ using QPlanning.Business.UseCases.Authorization.Claims.Roles.Create.Dto.Command;
 
 namespace QPlanning.Business.UseCases.Authorization.Claims.Roles.Create
 {
+	public class CreateRoleUseCase : IRequestHandler<CreateRoleCommand, BaseResponse>
+	{
+		private readonly IAuthorizationService _iqPlanningAuthorizationService;
+		public CreateRoleUseCase(IAuthorizationService iqPlanningAuthorizationService)
+		{
+			_iqPlanningAuthorizationService = iqPlanningAuthorizationService;
+		}
+		public async Task<BaseResponse> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
+		{
+			var response = await _iqPlanningAuthorizationService.AddRoleToUser(request.Email, request.Role);
+			return response;
+		}
+	}
+}
     public class CreateRoleUseCase : IRequestHandler<CreateRoleCommand, BaseResponse>
     {
         private readonly IAuthorizationService _authorizationService;
