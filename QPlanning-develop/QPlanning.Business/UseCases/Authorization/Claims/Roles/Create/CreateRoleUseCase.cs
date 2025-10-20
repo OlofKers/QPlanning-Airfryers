@@ -16,7 +16,7 @@ namespace QPlanning.Business.UseCases.Authorization.Claims.Roles.Create
 		}
 		public async Task<BaseResponse> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
 		{
-			var response = await _iqPlanningAuthorizationService.CreateClaimRole(request.Email, request.Role);
+			var response = await _iqPlanningAuthorizationService.AddRoleToUser(request.Email, request.Role);
 			return response;
 		}
 	}

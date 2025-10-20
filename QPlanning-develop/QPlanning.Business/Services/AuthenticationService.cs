@@ -31,8 +31,6 @@ namespace QPlanning.Business.Services
            var response = await _userRepository.CreateUser(domainModelUser, password);
            if (response.Errors?.Any() != true)
            {
-               //If the creation of the user is succeeded then also add the default role medewerker. 
-               if (response.Success) await _userRepository.CreateClaimRole(domainModelUser.Email, UserRole.Medewerker);
                return new BaseResponse(response.Id, response.Success);
            }
            

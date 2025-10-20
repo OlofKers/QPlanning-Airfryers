@@ -16,9 +16,9 @@ namespace QPlanning.Business.Services
         {
             _userRepository = userRepository;
         }
-        public async Task<BaseResponse> CreateClaimRole(string email, string role)
+        public async Task<BaseResponse> AddRoleToUser(string email, string role)
         {
-            var response = await _userRepository.CreateClaimRole(email, role);
+            var response = await _userRepository.AddRoleToUser(email, role);
             if (!UserRole.IsAllowedToRegisterRole(role))
                 return new BaseResponse("-1", false, $"The following role: {role}. Cannot be registered.");
             

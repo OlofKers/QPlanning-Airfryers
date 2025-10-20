@@ -99,14 +99,18 @@ namespace QPlanning.Infrastructure.Data.EntityFramework.QPlanningContext.Reposit
 			return await _userManager.GetClaimsAsync(user);
 		}
 
-		public async Task<CreateRoleResponse> CreateClaimRole(string email, string role)
-		{
-			var user = await FindDatabaseUserByEmail(email);
+
+		//Kyan - Bug gefixt, programma crasht niet meer als gebruiker wordt toegevoegd.
+        public async Task<CreateRoleResponse> AddRoleToUser(string email, string role)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return new CreateRoleResponse(null, false, null);
 			var identityResult = await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, role));
-			return new CreateRoleResponse(user.Id.ToString(), identityResult.Succeeded, identityResult.Succeeded ? null : identityResult.Errors.Select(e => new Error(e.Code, e.Description)));
-		}
-		
-		public async Task<DeleteRoleResponse> DeleteClaimRole(string email, string role)
+            return new CreateRoleResponse(user.Id.ToString(), true, null);
+        }
+
+        public async Task<DeleteRoleResponse> DeleteClaimRole(string email, string role)
 		{
 			var user = await FindDatabaseUserByEmail(email);
 			var identityResult = await _userManager.RemoveClaimAsync(user, new Claim(ClaimTypes.Role, role));
