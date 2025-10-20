@@ -17,7 +17,7 @@ public class RoleUseCaseUnitTests
         // Arrange
         var mockService = new Mock<IAuthorizationService>();
         mockService.Setup(s => s.AddRoleToUser(It.IsAny<string>(), It.IsAny<string>()))
-            .ReturnsAsync(new BaseResponse("", true));
+            .ReturnsAsync((string email, string role) => new BaseResponse("", true, "Role created"));
         var useCase = new CreateRoleUseCase(mockService.Object);
         var command = new CreateRoleCommand { Email = "test@example.com", Role = "Admin" };
 
@@ -53,7 +53,7 @@ public class RoleUseCaseUnitTests
         // Arrange
         var mockService = new Mock<IAuthorizationService>();
         mockService.Setup(s => s.AddRoleToUser(It.IsAny<string>(), It.IsAny<string>()))
-            .ReturnsAsync(new BaseResponse("Not allowed", false));
+            .ReturnsAsync((string email, string role) => new BaseResponse("", false, "Not allowed"));
         var useCase = new CreateRoleUseCase(mockService.Object);
         var command = new CreateRoleCommand { Email = "test@example.com", Role = "Admin" };
 
