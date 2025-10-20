@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using MediatR;
-using QPlanning.Business.UseCases.Boeking.Dto;
 
 namespace QPlanning.Business.UseCases.Boeking.Add.Dto
 {
@@ -15,7 +14,6 @@ namespace QPlanning.Business.UseCases.Boeking.Add.Dto
 
         public DateTime PlannedDate { get; set; }
         public int? MedewerkerId { get; set; }
-        
         public List<int> MedewerkerIds { get; set; }
         public int? KlantId { get; set; }
         public int? OpdrachtId { get; set; }

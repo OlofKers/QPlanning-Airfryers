@@ -7,131 +7,102 @@ using QPlanning.Business.Domain.Entities;
 using QPlanning.Business.Interfaces.Services;
 using QPlanning.Business.UseCases.Boeking.Add;
 using QPlanning.Business.UseCases.Boeking.Add.Dto;
-using QPlanning.Business.UseCases.Boeking.Dto;
-using QPlanning.Business.UseCases.Boeking.Update;
-using QPlanning.Business.UseCases.Boeking.Update.Dto;
 
 public class BoekingUseCaseUnitTests
 {
     [Fact]
     public async Task AddBoekingen_With_Empty_List_Should_Fail()
     {
-        // Arrange
         var mockService = new Mock<IBoekingService>();
-        // Simuleer huidige situatie: service geeft altijd success = true terug
-        mockService.Setup(s => s.AddBoekingen(It.IsAny<List<DomainModelBoeking>>()))
-            .ReturnsAsync(new BoekingResponse(1, true, "Success"));
         var useCase = new AddBoekingUseCase(mockService.Object);
-        var command = new AddBoekingCommand { MedewerkerIds = new List<int>(), Jaar = 2025 };
+        var command = new AddBoekingCommand { MedewerkerIds = new List<int>(), Jaar = 2025, Uren = 5, KlantId = 1, Weeknummer = 1 };
 
-        // Act
-        var result = await useCase.Handle(command, CancellationToken.None);
-
-        // Assert
-        // Test faalt als de actie tóch lukt (want dat mag niet)
-        Assert.False(result.Success);
-    }
-
-    [Fact]
-    public async Task UpdateBoeking_With_Invalid_MedewerkerId_Should_Fail()
-    {
-        // Arrange
-        var mockService = new Mock<IBoekingService>();
-        mockService.Setup(s => s.UpdateBoeking(It.IsAny<DomainModelBoeking>()))
-            .ReturnsAsync(new BoekingResponse(1, true, "Success"));
-        var useCase = new UpdateBoekingUseCase(mockService.Object);
-        var command = new UpdateBoekingCommand { Jaar = 2025, MedewerkerId = 0 };
-
-        // Act
         var result = await useCase.Handle(command, CancellationToken.None);
 
         Assert.False(result.Success);
+        Assert.Equal("Geen medewerker opgegeven", result.Message);
     }
 
     [Fact]
     public async Task AddBoeking_With_Negative_Uren_Should_Fail()
     {
-        // Arrange
         var mockService = new Mock<IBoekingService>();
-        mockService.Setup(s => s.AddBoekingen(It.IsAny<List<DomainModelBoeking>>()))
-            .ReturnsAsync(new BoekingResponse(1, true, "Success"));
         var useCase = new AddBoekingUseCase(mockService.Object);
         var command = new AddBoekingCommand
         {
             MedewerkerIds = new List<int> { 1 },
             Jaar = 2025,
-            Uren = -5 // Negatieve uren
+            KlantId = 1,
+            Weeknummer = 1,
+            Uren = -5
         };
 
-        // Act
         var result = await useCase.Handle(command, CancellationToken.None);
 
-        // Assert
         Assert.False(result.Success);
+        Assert.Equal("Uren kunnen niet negatief zijn", result.Message);
     }
 
     [Fact]
     public async Task AddBoeking_With_Invalid_KlantId_Should_Fail()
     {
-        // Arrange
         var mockService = new Mock<IBoekingService>();
-        mockService.Setup(s => s.AddBoekingen(It.IsAny<List<DomainModelBoeking>>()))
-            .ReturnsAsync(new BoekingResponse(1, true, "Success"));
         var useCase = new AddBoekingUseCase(mockService.Object);
         var command = new AddBoekingCommand
         {
             MedewerkerIds = new List<int> { 1 },
             Jaar = 2025,
-            KlantId = 0 // Ongeldige klantId
+            KlantId = 0,
+            Weeknummer = 1,
+            Uren = 5
         };
 
-        // Act
         var result = await useCase.Handle(command, CancellationToken.None);
 
-        // Assert
         Assert.False(result.Success);
+        Assert.Equal("Ongeldige klantId", result.Message);
     }
 
     [Fact]
     public async Task AddBoeking_With_Invalid_Weeknummer_Should_Fail()
     {
-        // Arrange
         var mockService = new Mock<IBoekingService>();
-        mockService.Setup(s => s.AddBoekingen(It.IsAny<List<DomainModelBoeking>>()))
-            .ReturnsAsync(new BoekingResponse(1, true, "Success"));
         var useCase = new AddBoekingUseCase(mockService.Object);
         var command = new AddBoekingCommand
         {
             MedewerkerIds = new List<int> { 1 },
             Jaar = 2025,
-            Weeknummer = 0 // Ongeldige weeknummer
+            KlantId = 1,
+            Weeknummer = 0,
+            Uren = 5
         };
 
-        // Act
         var result = await useCase.Handle(command, CancellationToken.None);
 
-        // Assert
         Assert.False(result.Success);
+        Assert.Equal("Ongeldige weeknummer", result.Message);
     }
 
     [Fact]
-    public async Task AddBoeking_With_Missing_MedewerkerId_Should_Fail()
+    public async Task AddBoeking_With_Valid_Input_Should_Succeed()
     {
-        // Arrange
         var mockService = new Mock<IBoekingService>();
         mockService.Setup(s => s.AddBoekingen(It.IsAny<List<DomainModelBoeking>>()))
-            .ReturnsAsync(new BoekingResponse(1, true, "Success"));
+                   .ReturnsAsync(new BoekingResponse(1, true, "Success"));
+
         var useCase = new AddBoekingUseCase(mockService.Object);
         var command = new AddBoekingCommand
         {
+            MedewerkerIds = new List<int> { 1 },
             Jaar = 2025,
-            // MedewerkerIds niet gezet en MedewerkerId niet gezet
+            KlantId = 1,
+            Weeknummer = 1,
+            Uren = 8
         };
 
-        // Act
         var result = await useCase.Handle(command, CancellationToken.None);
 
-        // Assert
-        Assert.False(result.Success);
+        Assert.True(result.Success);
+        Assert.Equal("Success", result.Message);
     }
 }

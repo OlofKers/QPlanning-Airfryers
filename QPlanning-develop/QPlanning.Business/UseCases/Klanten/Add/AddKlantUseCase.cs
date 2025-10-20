@@ -15,8 +15,20 @@ namespace QPlanning.Business.UseCases.Klanten.Add
         {
             _klantDomainService = klantDomainService;
         }
+
         public async Task<BaseResponse> Handle(AddKlantCommand request, CancellationToken cancellationToken)
         {
+            // --- Validatie ---
+            if (string.IsNullOrWhiteSpace(request.Naam))
+                return new BaseResponse("Naam is verplicht", false);
+
+            if (request.Budget <= 0)
+                return new BaseResponse("Budget moet groter dan nul zijn", false);
+
+            if (request.Boekjaar <= 0)
+                return new BaseResponse("Boekjaar is verplicht", false);
+
+            // --- Domain call ---
             var result = await _klantDomainService.AddKlant(request);
             return result;
         }
