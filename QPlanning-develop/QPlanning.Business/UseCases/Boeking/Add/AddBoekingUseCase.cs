@@ -5,7 +5,6 @@ using MediatR;
 using QPlanning.Business.Domain.Entities;
 using QPlanning.Business.Interfaces.Services;
 using QPlanning.Business.UseCases.Boeking.Add.Dto;
-using QPlanning.Business.UseCases.Boeking.Dto;
 
 namespace QPlanning.Business.UseCases.Boeking.Add
 {
@@ -20,21 +19,38 @@ namespace QPlanning.Business.UseCases.Boeking.Add
 
         public async Task<BoekingResponse> Handle(AddBoekingCommand request, CancellationToken cancellationToken)
         {
+            // --- VALIDATIE ---
+            if ((request.MedewerkerIds == null || request.MedewerkerIds.Count == 0)
+                && !request.MedewerkerId.HasValue)
+            {
+                return new BoekingResponse(0, false, "Geen medewerker opgegeven");
+            }
+
+            if (request.Uren < 0)
+                return new BoekingResponse(0, false, "Uren kunnen niet negatief zijn");
+
+            if (!request.KlantId.HasValue || request.KlantId <= 0)
+                return new BoekingResponse(0, false, "Ongeldige klantId");
+
+            if (!request.Weeknummer.HasValue || request.Weeknummer <= 0)
+                return new BoekingResponse(0, false, "Ongeldige weeknummer");
+
+            // --- DOMAIN MODEL CREËREN ---
             var domainModelBoekingen = new List<DomainModelBoeking>();
 
-            if (request.MedewerkerIds != null)
+            if (request.MedewerkerIds != null && request.MedewerkerIds.Count > 0)
             {
                 foreach (var medewerkerId in request.MedewerkerIds)
                 {
                     CreateDomainModelBoeking(request, domainModelBoekingen, medewerkerId);
                 }
             }
-            else
+            else if (request.MedewerkerId.HasValue)
             {
-                if (request.MedewerkerId.HasValue)
-                    CreateDomainModelBoeking(request, domainModelBoekingen, request.MedewerkerId.Value);
+                CreateDomainModelBoeking(request, domainModelBoekingen, request.MedewerkerId.Value);
             }
 
+            // --- SERVICE AANROEPEN ---
             var response = await _boekingService.AddBoekingen(domainModelBoekingen);
             return response;
         }

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using MediatR;
-using QPlanning.Business.Interfaces.Base;
+using QPlanning.Business.Dto.Base.UseCaseResponses;
 
 namespace QPlanning.Business.UseCases.Medewerkers.Edit.Dto.Command
 {
-    public class EditMedewerkerCommand: IRequest<UseCaseResponseMessage>
+    public class EditMedewerkerCommand : IRequest<BaseResponse>
     {
         public int Id { get; set; }
         public string Voornaam { get; set; }
@@ -14,9 +14,9 @@ namespace QPlanning.Business.UseCases.Medewerkers.Edit.Dto.Command
         public int? Tarief { get; set; }
         public int? InternTarief { get; set; }
         public int? MedewerkerFunctieId { get; set; }
-        
+
         public bool IsActief { get; set; }
-        
+
         public List<int> PlanbaarDoorTeamIds { get; set; }
         public int TeamId { get; set; }
     }

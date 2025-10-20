@@ -22,15 +22,26 @@ namespace QPlanning.Api.UnitTests.Controllers
             // Arrange
             var mockMediator = new Mock<IMediator>();
             mockMediator.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new BaseResponse("", true));
+                .ReturnsAsync(new BaseResponse("", true)); // Succesvol resultaat
+
             var controller = new AccountController(mockMediator.Object);
 
+            // Gebruik geldige waarden voor het command
+            var command = new CreateUserCommand(
+                "Test",           // Voornaam
+                "User",           // Achternaam
+                "test@email.com", // Email
+                "testuser",       // UserName
+                "Password123"     // Password
+            );
+
             // Act
-            var result = await controller.Add(new CreateUserCommand("", "", "", "", ""));
+            var result = await controller.Add(command);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
         }
+
 
         [Fact]
         public async Task Add_Returns_BadRequest_When_Failure()
@@ -165,14 +176,23 @@ namespace QPlanning.Api.UnitTests.Controllers
             var mockMediator = new Mock<IMediator>();
             mockMediator.Setup(m => m.Send(It.IsAny<CreateRoleCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new BaseResponse("", true));
+
             var controller = new AccountController(mockMediator.Object);
 
+            var command = new CreateRoleCommand
+            {
+                Email = "test@example.com",
+                Role = "Admin"
+            };
+
             // Act
-            var result = await controller.AddClaimRoleToUser(new CreateRoleCommand());
+            var result = await controller.AddClaimRoleToUser(command);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
         }
+
+
 
         [Fact]
         public async Task AddClaimRoleToUser_Returns_BadRequest_When_Failure()
@@ -197,14 +217,22 @@ namespace QPlanning.Api.UnitTests.Controllers
             var mockMediator = new Mock<IMediator>();
             mockMediator.Setup(m => m.Send(It.IsAny<DeleteRoleCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new BaseResponse("", true));
+
             var controller = new AccountController(mockMediator.Object);
 
+            var command = new DeleteRoleCommand
+            {
+                Email = "test@example.com",
+                Role = "Admin"
+            };
+
             // Act
-            var result = await controller.RemoveClaimRoleToUser(new DeleteRoleCommand());
+            var result = await controller.RemoveClaimRoleToUser(command);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
         }
+
 
         [Fact]
         public async Task RemoveClaimRoleToUser_Returns_BadRequest_When_Failure()

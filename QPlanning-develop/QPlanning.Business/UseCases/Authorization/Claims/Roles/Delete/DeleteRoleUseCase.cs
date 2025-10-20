@@ -15,10 +15,22 @@ namespace QPlanning.Business.UseCases.Authorization.Claims.Roles.Delete
         {
             _authorizationService = authorizationService;
         }
-        
+
         public async Task<BaseResponse> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
         {
-           return await _authorizationService.DeleteClaimRole(request.Email, request.Role);
+            // Inputvalidatie
+            if (string.IsNullOrWhiteSpace(request.Email))
+                return new BaseResponse("Email mag niet leeg zijn.", false);
+
+            if (!request.Email.Contains("@"))
+                return new BaseResponse("Email is ongeldig.", false);
+
+            if (string.IsNullOrWhiteSpace(request.Role))
+                return new BaseResponse("Role mag niet leeg zijn.", false);
+
+            // Service aanroepen
+            var response = await _authorizationService.DeleteClaimRole(request.Email, request.Role);
+            return response;
         }
     }
 }

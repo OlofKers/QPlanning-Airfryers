@@ -7,7 +7,7 @@ using QPlanning.Business.UseCases.Klanten.Edit.Dto.Commands;
 
 namespace QPlanning.Business.UseCases.Klanten.Edit
 {
-    public class EditKlantUseCase: IRequestHandler<EditKlantCommand, BaseResponse>
+    public class EditKlantUseCase : IRequestHandler<EditKlantCommand, BaseResponse>
     {
         private readonly IKlantDomainService _klantDomainService;
 
@@ -15,8 +15,12 @@ namespace QPlanning.Business.UseCases.Klanten.Edit
         {
             _klantDomainService = klantDomainService;
         }
+
         public async Task<BaseResponse> Handle(EditKlantCommand request, CancellationToken cancellationToken)
         {
+            if (request.Id <= 0) return new BaseResponse("Invalid Id", false);
+            if (string.IsNullOrWhiteSpace(request.Naam)) return new BaseResponse("Naam is required", false);
+
             var result = await _klantDomainService.EditKlant(request);
             return result;
         }
