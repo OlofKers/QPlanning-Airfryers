@@ -32,6 +32,7 @@ export class BoekingDetailsComponent implements OnInit {
   boekjaarDropDown: number[];
   plannedDate;
   klantOrIndirectIsProvided: boolean;
+  errorMessage: string;
 
   constructor(private fb: FormBuilder,
               private dialogRef: MatDialogRef<BoekingDetailsComponent>,
@@ -82,6 +83,21 @@ export class BoekingDetailsComponent implements OnInit {
     this.klantOrIndirectIsProvided = !!(this.klantId || this.indirecteUrenId);
   }
 
+  // new plannedDateShouldChange function, gets database info from date picker.
+  plannedDateShouldChange() {
+    if (this.plannedDate) {
+      const date = this.plannedDate;
+      this.geplandeJaar = date.getFullYear();
+      this.geplandeWeeknummer = this.getWeekNumber(date);
+    }
+  }
+  // helper function for determining week number
+  getWeekNumber(date:Date): number {
+    const firstJan = new Date(date.getFullYear(), 0, 1);
+    const pastDays = (date.valueOf() - firstJan.valueOf()) / 86400000;
+    return Math.ceil((pastDays + firstJan.getDay() + 1) / 7);
+  }
+
   getBookyears(event) {
     let idFromKlant = this.klantId;
     if (event) {
@@ -106,6 +122,8 @@ export class BoekingDetailsComponent implements OnInit {
     this.klantOrIndirectIsProvided = !!(idFromIndirectUren || this.form.value.klantId);
   }
 
+
+  // add logic here to support numbers and stuff as well
   save() {
     if (this.form.value.klantId || this.form.value.indirecteUrenId) {
       this.form.value.plannedDate = this.plannedDate;
@@ -117,11 +135,14 @@ export class BoekingDetailsComponent implements OnInit {
     }
   }
 
+
   close() {
     this.dialogRef.close();
   }
 
-  plannedDateShouldChange()  {
-    this.plannedDate = moment().isoWeekday(1).isoWeekYear(this.geplandeJaar).isoWeek(this.geplandeWeeknummer);
-  }
+  //old function, commented out to prevent errors:
+
+  // plannedDateShouldChange()  {
+  //   this.plannedDate = moment().isoWeekday(1).isoWeekYear(this.geplandeJaar).isoWeek(this.geplandeWeeknummer);
+  // }
 }
