@@ -43,27 +43,22 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-
-  <div *ngIf="!klantOrIndirectIsProvided" class="warning">
+  
+  <!-- <div *ngIf="!klantOrIndirectIsProvided" class="warning">
     * Klant of Indirecte uren dienen minimaal gevuld te zijn.
-  </div>
+  </div> -->
 
+  <!--Made 'klant' required  -->
   <mat-form-field>
-      <mat-select (selectionChange)="getBookyears($event)" placeholder="Klant" formControlName="klantId" >
+      <mat-select (selectionChange)="getBookyears($event)" required placeholder="Klant" formControlName="klantId" >
       <mat-option>Geen klant</mat-option>
       <mat-option *ngFor="let klant of klantenDropDown" [value]="klant.id">
         {{klant.naam}}
       </mat-option>
     </mat-select>
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-select placeholder="Boekjaar" formControlName="boekjaar" >
-      <mat-option>Geen boekjaar</mat-option>
-      <mat-option *ngFor="let boekjaar of boekjaarDropDown" [value]="boekjaar">
-        {{boekjaar}}
-      </mat-option>
-    </mat-select>
+    <mat-error *ngIf="form.get('klantId')?.hasError('required') && form.get('klantId')?.touched">
+      Klant is verplicht
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field>
