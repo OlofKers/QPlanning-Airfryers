@@ -2,33 +2,38 @@
 
 <mat-dialog-content class="grid" [formGroup]="form" >
 
-
+<!--made almost every field required in this document-->
   <table class="example-full-width"><tr>
     <td><mat-form-field class="example-full-width">
-      <input matInput placeholder="Voornaam"  formControlName="voornaam">
+      <input matInput required placeholder="Voornaam"  formControlName="voornaam">
     </mat-form-field></td>
     <td><mat-form-field class="example-full-width">
-      <input matInput placeholder="TussenVoegsel" formControlName="tussenVoegsel">
+      <input matInput placeholder="Tussenvoegsel" formControlName="tussenVoegsel">
     </mat-form-field></td>
   </tr></table>
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="Achternaam" formControlName="achternaam">
+    <input matInput required placeholder="Achternaam" formControlName="achternaam">
   </mat-form-field>
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="Email"  formControlName="email">
+    <input matInput required placeholder="Email"  formControlName="email">
+    <mat-error *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched">
+      Voer een geldig e-mailadres in
+    </mat-error>
   </mat-form-field>
 
-
+  
   <table class="example-full-width"><tr>
     <td><mat-form-field class="example-full-width">
-      <input matInput placeholder="Tarief" minlength="1" maxlength="3" #tarief formControlName="tarief">
+      <input matInput required placeholder="Tarief" minlength="1" maxlength="3" #tarief formControlName="tarief" pattern="^[0-9]*$">
       <mat-hint align="end">{{tarief.value.length}} / 3</mat-hint>
     </mat-form-field></td>
     <td><mat-form-field class="example-full-width">
-      <input matInput placeholder="InternTarief" minlength="1" maxlength="3" #internTarief formControlName="internTarief">
+      <input matInput required placeholder="InternTarief" minlength="1" maxlength="3" #internTarief formControlName="internTarief" pattern="^[0-9]*$">
       <mat-hint align="end">{{internTarief.value.length}} / 3</mat-hint>
     </mat-form-field></td>
   </tr></table>
+  <!--Hint-->
+  <p id="tarief-hint">Bedragen voor tarieven zijn in hele euros*</p>
 
   <mat-form-field>
     <mat-select required placeholder="Functie" formControlName="medewerkerFunctieId" >
@@ -39,7 +44,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Team" formControlName="teamId" >
+    <mat-select required placeholder="Team" formControlName="teamId" >
       <mat-option *ngFor="let team of teamDropDown" [value]="team.id">
         {{team.naam}}
       </mat-option>
@@ -47,7 +52,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select [multiple]="true" placeholder="Planbaar door teams"
+    <mat-select [multiple]="true" required placeholder="Planbaar door teams"
                 formControlName="planbaarDoorTeamIds">
       <mat-option *ngFor="let team of teamDropDown" [value]="team.id">
         {{team.naam}}
