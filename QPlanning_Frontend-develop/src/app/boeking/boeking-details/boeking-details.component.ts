@@ -123,7 +123,6 @@ export class BoekingDetailsComponent implements OnInit {
   }
 
 
-  // add logic here to support numbers and stuff as well
   save() {
     if (this.form.value.klantId || this.form.value.indirecteUrenId) {
       this.form.value.plannedDate = this.plannedDate;

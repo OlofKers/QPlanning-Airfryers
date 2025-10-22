@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
@@ -20,6 +20,14 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService
   ) { }
+
+  //allow login using 'Enter' key
+  @HostListener('window:keydown', ['$event'])
+  handleKeyBoardEvent(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.login();
+    }
+  }
 
   ngOnInit() {
     // reset login status

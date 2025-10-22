@@ -5,9 +5,9 @@
 
   <table class="example-full-width"><tr>
     <td><mat-form-field  class="xs">
-      <input matInput placeholder="Uren" required maxlength="3" formControlName="uren">
+      <input matInput placeholder="Uren" required maxlength="3" formControlName="uren" pattern="^[0-9]*$">
       <mat-error *ngIf="form.get('uren').invalid">
-        Uren zijn verplicht
+        Voer het aantal uur in
       </mat-error>
     </mat-form-field></td>
     <!-- <td><mat-form-field class="xs">

@@ -2,11 +2,20 @@
 
 <mat-dialog-content class="grid" [formGroup]="form">
 
+
+<!--Split the name fields-->
   <table class="example-full-width">
     <tr>
-        <mat-form-field class="example-full-width no-inline-block">
-          <input matInput placeholder="Klant naam" formControlName="naam">
+      <td>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Voornaam" formControlName="voornaam">
         </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class ="example-full-width">
+          <input matInput placeholder="Achternaam" formControlName="achternaam">
+        </mat-form-field>
+      </td>
     </tr>
   </table>
 
@@ -18,9 +27,14 @@
           <mat-hint align="end">{{boekjaar.value.length}} / 4</mat-hint>
         </mat-form-field>
       </td>
+
+      <!--Restricted Budget field to only accept numbers and added an error message-->
       <td>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Budget" required maxlength="8" formControlName="budget">
+          <input matInput placeholder="Budget" required maxlength="8" formControlName="budget" pattern="^[0-9]*$">
+          <mat-error *ngIf="form.get('budget')?.hasError('required') && form.get('budget')?.touched">
+            Budget in hele euro's
+          </mat-error>
         </mat-form-field>
       </td>
     </tr>
