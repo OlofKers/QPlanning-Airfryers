@@ -5,14 +5,17 @@
 
   <table class="example-full-width"><tr>
     <td><mat-form-field  class="xs">
-      <input matInput placeholder="Uren" required maxlength="3" formControlName="uren">
+      <input matInput placeholder="Uren" required maxlength="3" formControlName="uren" pattern="^[0-9]*$">
+      <mat-error *ngIf="form.get('uren').invalid">
+        Voer het aantal uur in
+      </mat-error>
+    </mat-form-field></td>
+    <!-- <td><mat-form-field class="xs">
+      <input matInput placeholder="Week nr." [ngModelOptions]="{standalone: true}" type="number" (change)="plannedDateShouldChange()" min="1" max="52" [(ngModel)]="geplandeWeeknummer" >
     </mat-form-field></td>
     <td><mat-form-field class="xs">
-      <input matInput placeholder="Week nr." [ngModelOptions]="{standalone: true}" type="number" (change)="plannedDateShouldChange()" maxlength="2" [(ngModel)]="geplandeWeeknummer" >
-    </mat-form-field></td>
-    <td><mat-form-field class="xs">
-      <input matInput placeholder="Jaar" [ngModelOptions]="{standalone: true}" type="number"  (change)="plannedDateShouldChange()" maxlength="4" [(ngModel)]="geplandeJaar" >
-    </mat-form-field></td>
+      <input matInput placeholder="Jaar" [ngModelOptions]="{standalone: true}" type="number"  (change)="plannedDateShouldChange()" min="1925" max="2125" [(ngModel)]="geplandeJaar" >
+    </mat-form-field></td> -->
     <td><mat-form-field  class="large">
       <input [(ngModel)]="plannedDate" matInput [matDatepicker]="plannedDatePicker"  placeholder="plan datum"  [ngModelOptions]="{standalone: true}">
       <mat-datepicker-toggle  matSuffix [for]="plannedDatePicker"></mat-datepicker-toggle>
@@ -36,34 +39,33 @@
     </mat-select>
   </mat-form-field>
 
+  <!--Made 'medewerker' require at least one entry-->
   <mat-form-field *ngIf="!medewerkerId">
     <mat-select [multiple]="true"  required placeholder="Medewerker" formControlName="medewerkerIds" >
       <mat-option *ngFor="let medewerker of medewerkersDropDown" [value]="medewerker.id">
         {{medewerker.naam}}
       </mat-option>
     </mat-select>
+    <mat-error *ngIf="form.get('medewerkerIds')?.hasError('required') && form.get('medewerkerIds')?.touched">
+      Minimaal 1 medewerker is verplicht
+    </mat-error>
   </mat-form-field>
-
-  <div *ngIf="!klantOrIndirectIsProvided" class="warning">
+  
+  <!-- <div *ngIf="!klantOrIndirectIsProvided" class="warning">
     * Klant of Indirecte uren dienen minimaal gevuld te zijn.
-  </div>
+  </div> -->
 
+  <!--Made 'klant' required-->
   <mat-form-field>
-      <mat-select (selectionChange)="getBookyears($event)" placeholder="Klant" formControlName="klantId" >
+      <mat-select (selectionChange)="getBookyears($event)" required placeholder="Klant" formControlName="klantId" >
       <mat-option>Geen klant</mat-option>
       <mat-option *ngFor="let klant of klantenDropDown" [value]="klant.id">
         {{klant.naam}}
       </mat-option>
     </mat-select>
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-select placeholder="Boekjaar" formControlName="boekjaar" >
-      <mat-option>Geen boekjaar</mat-option>
-      <mat-option *ngFor="let boekjaar of boekjaarDropDown" [value]="boekjaar">
-        {{boekjaar}}
-      </mat-option>
-    </mat-select>
+    <mat-error *ngIf="form.get('klantId')?.hasError('required') && form.get('klantId')?.touched">
+      Klant is verplicht
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field>
@@ -91,3 +93,6 @@
   <button [disabled]="!form.valid || klantOrIndirectIsProvided === false" class="mat-raised-button mat-primary" (click)="save()">{{saveButtonText}}</button>
 </mat-dialog-actions>
 
+<mat-error *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</mat-error>

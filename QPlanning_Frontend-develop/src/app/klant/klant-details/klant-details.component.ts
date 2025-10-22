@@ -16,6 +16,11 @@ export class KlantDetailsComponent implements OnInit {
   form: FormGroup;
   title: string;
   saveButtonText: string;
+
+  //added variables for seperate name fields
+  voornaam: string;
+  achternaam:string;
+
   naam: string;
   startdatum: string;
   einddatum: string;
@@ -38,6 +43,11 @@ export class KlantDetailsComponent implements OnInit {
     this.teamDropDown = data.teamDropDown;
     this.medewerkersDropDown = data.medewerkersDropDown;
     this.medewerkerId = data.medewerkerId;
+
+    //added variables for seperate name fields
+    this.voornaam = data.voornaam;
+    this.achternaam = data.achternaam;
+
     this.naam = data.naam;
     this.startdatum = data.startdatum;
     this.einddatum = data.einddatum;
@@ -55,7 +65,11 @@ export class KlantDetailsComponent implements OnInit {
       budget: [this.budget, []],
       boekjaar: [this.boekjaar, []],
       medewerkerId: [this.medewerkerId, []],
-      naam: [this.naam, []],
+
+      //added variables for seperate name fields
+      voornaam: [this.voornaam, []],
+      achternaam: [this.achternaam, []],
+
       startdatum: [this.startdatum, []],
       einddatum: [this.einddatum, []],
       verantwoordelijkTeamId: [this.verantwoordelijkTeamId, []],
@@ -63,8 +77,11 @@ export class KlantDetailsComponent implements OnInit {
     });
   }
 
+  // merge seperate name field into one
   save() {
-    this.dialogRef.close(this.form.value);
+  const formValue = this.form.getRawValue();
+  formValue.naam = `${formValue.voornaam || ''} ${formValue.achternaam || ''}`.trim();
+  this.dialogRef.close(formValue);    
   }
 
   close() {
