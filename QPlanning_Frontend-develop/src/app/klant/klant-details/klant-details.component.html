@@ -28,20 +28,20 @@
         </mat-form-field>
       </td>
 
-      <!--Restricted Budget field to only accept numbers and added an error message-->
+      <!--Olaf - Restricted Budget field to only accept numbers and added an error message-->
+      <!--Kyan - Budget eurotekentje toegevoegd -->
       <td>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Budget" required maxlength="8" formControlName="budget" pattern="^[0-9]*$">
-          <mat-error *ngIf="form.get('budget')?.hasError('required') && form.get('budget')?.touched">
-            Budget in hele euro's
+         <span matPrefix>€&nbsp;</span>
+         <input matInput placeholder="Budget" required maxlength="8" formControlName="budget" pattern="^[0-9]*$">
+         <mat-error *ngIf="form.get('budget')?.hasError('required') && form.get('budget')?.touched">
+           Budget in hele euro's
           </mat-error>
-        </mat-form-field>
-      </td>
+       </mat-form-field>
+    </td>
     </tr>
-  </table>
-
-
-
+  </table>  
+  
   <table class="example-full-width">
     <tr>
       <mat-form-field>

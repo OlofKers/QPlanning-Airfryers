@@ -21,18 +21,27 @@
     </mat-error>
   </mat-form-field>
 
-  
+  <!-- Kyan - euroteken voor tarief en intern tarief gezet-->
+  <!-- Kyan - Tarief en Intern tarief moet in hele euros waarschuwing-->
   <table class="example-full-width"><tr>
     <td><mat-form-field class="example-full-width">
+      <span matPrefix>€&nbsp;</span>
       <input matInput required placeholder="Tarief" minlength="1" maxlength="3" #tarief formControlName="tarief" pattern="^[0-9]*$">
       <mat-hint align="end">{{tarief.value.length}} / 3</mat-hint>
+               <mat-error *ngIf="form.get('tarief')?.hasError('required') && form.get('tarief')?.touched">
+           Tarief in hele euro's
+          </mat-error>
     </mat-form-field></td>
     <td><mat-form-field class="example-full-width">
+      <span matPrefix>€&nbsp;</span>
       <input matInput required placeholder="InternTarief" minlength="1" maxlength="3" #internTarief formControlName="internTarief" pattern="^[0-9]*$">
       <mat-hint align="end">{{internTarief.value.length}} / 3</mat-hint>
+               <mat-error *ngIf="form.get('InternTarief')?.hasError('required') && form.get('InternTarief')?.touched">
+           Intern Tarief in hele euro's
+          </mat-error>
     </mat-form-field></td>
   </tr></table>
-  <!--Hint-->
+  <!-- Olaf - Hint voor het invoeren van tarieven -->
   <p id="tarief-hint">Bedragen voor tarieven zijn in hele euros*</p>
 
   <mat-form-field>
