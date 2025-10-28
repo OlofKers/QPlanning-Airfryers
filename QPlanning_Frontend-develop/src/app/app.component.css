@@ -30,3 +30,78 @@ mat-toolbar-row.mat-toolbar-row {
   font-size: smaller;
   line-height: 10px;
 }
+
+/* ...existing code... */
+
+.user-menu {
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  gap: 6px;
+  border-radius: 4px;
+}
+
+.user-menu:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.user-menu mat-icon {
+  font-size: 20px;
+}
+
+/* nav-menu (Planning / Beheer) styles to match user menu */
+.nav-menu {
+  padding: 0 12px;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 4px;
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+.nav-menu:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.nav-menu mat-icon {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* Dropdown appearance for nav menus */
+::ng-deep .nav-dropdown {
+  margin-top: 8px;
+  min-width: 200px;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.14);
+}
+
+::ng-deep .nav-dropdown .mat-menu-item,
+::ng-deep .user-dropdown .mat-menu-item {
+  font-size: 14px;
+  height: 44px;
+  align-items: center;
+}
+
+/* keep existing user-dropdown tweaks */
+::ng-deep .user-dropdown {
+  margin-top: 8px;
+  min-width: 220px;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.14);
+}
+
+::ng-deep .user-dropdown .mat-divider,
+::ng-deep .nav-dropdown .mat-divider {
+  margin: 6px 0;
+}
+
+/* helper */
+.flex-spacer {
+  flex: 1 1 auto;
+}
+
