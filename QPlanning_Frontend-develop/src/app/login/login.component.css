@@ -5,3 +5,30 @@
 .loader ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
   stroke: #8aba87;
 }
+
+.main-div {
+  background-image: url("../../assets/images/login-vector.png");
+  background-position-x: right;
+}
+
+.example-form {
+  width: 300px;
+}
+
+#login-image {
+  width: 912px;
+  height: 608px;
+  scale: 60%;
+}
+
+#login-form {
+  margin-left: 200px;
+  margin-top: 100px;
+  display: flex; 
+  flex-direction: column; 
+  width: 600px; 
+  height: 300px; 
+  padding: 24px; 
+  border-radius: 6px;
+  flex-grow: 300px;
+}
