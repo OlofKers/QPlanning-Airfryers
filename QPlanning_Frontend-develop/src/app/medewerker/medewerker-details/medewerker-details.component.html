@@ -1,78 +1,92 @@
-<h2 mat-dialog-title>{{title}}</h2>
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content [formGroup]="form" class="form-container">
 
-<mat-dialog-content class="grid" [formGroup]="form" >
+  <!-- Naamvelden -->
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <input matInput required placeholder="Voornaam" formControlName="voornaam">
+    </mat-form-field>
 
-<!--made almost every field required in this document-->
-  <table class="example-full-width"><tr>
-    <td><mat-form-field class="example-full-width">
-      <input matInput required placeholder="Voornaam"  formControlName="voornaam">
-    </mat-form-field></td>
-    <td><mat-form-field class="example-full-width">
+   <mat-form-field appearance="outline">
       <input matInput placeholder="Tussenvoegsel" formControlName="tussenVoegsel">
-    </mat-form-field></td>
-  </tr></table>
-  <mat-form-field class="example-full-width">
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="outline">
     <input matInput required placeholder="Achternaam" formControlName="achternaam">
   </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input matInput required placeholder="Email"  formControlName="email">
+
+  <mat-form-field appearance="outline">
+    <input matInput required placeholder="Email" formControlName="email">
     <mat-error *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched">
       Voer een geldig e-mailadres in
     </mat-error>
   </mat-form-field>
 
-  <!-- Kyan - euroteken voor tarief en intern tarief gezet-->
-  <!-- Kyan - Tarief en Intern tarief moet in hele euros waarschuwing-->
-  <table class="example-full-width"><tr>
-    <td><mat-form-field class="example-full-width">
-      <span matPrefix>€&nbsp;</span>
+  <!-- Tarieven -->
+  <div class="row">
+    <mat-form-field appearance="outline">
       <input matInput required placeholder="Tarief" minlength="1" maxlength="3" #tarief formControlName="tarief" pattern="^[0-9]*$">
-      <mat-hint align="end">{{tarief.value.length}} / 3</mat-hint>
-               <mat-error *ngIf="form.get('tarief')?.hasError('required') && form.get('tarief')?.touched">
-           Tarief in hele euro's
-          </mat-error>
-    </mat-form-field></td>
-    <td><mat-form-field class="example-full-width">
-      <span matPrefix>€&nbsp;</span>
-      <input matInput required placeholder="InternTarief" minlength="1" maxlength="3" #internTarief formControlName="internTarief" pattern="^[0-9]*$">
-      <mat-hint align="end">{{internTarief.value.length}} / 3</mat-hint>
-               <mat-error *ngIf="form.get('InternTarief')?.hasError('required') && form.get('InternTarief')?.touched">
-           Intern Tarief in hele euro's
-          </mat-error>
-    </mat-form-field></td>
-  </tr></table>
-  <!-- Olaf - Hint voor het invoeren van tarieven -->
-  <p id="tarief-hint">Bedragen voor tarieven zijn in hele euros*</p>
+      <mat-hint align="end">{{ tarief.value.length }} / 3</mat-hint>
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-select required placeholder="Functie" formControlName="medewerkerFunctieId" >
+    <mat-form-field appearance="outline">
+      <input matInput required placeholder="Intern Tarief" minlength="1" maxlength="3" #internTarief formControlName="internTarief" pattern="^[0-9]*$">
+      <mat-hint align="end">{{ internTarief.value.length }} / 3</mat-hint>
+    </mat-form-field>
+  </div>
+  <p class="hint-text">Bedragen voor tarieven zijn in hele euros*</p>
+
+  <!-- Functie -->
+  <mat-form-field appearance="outline">
+    <mat-select required placeholder="Functie" formControlName="medewerkerFunctieId">
       <mat-option *ngFor="let functie of medewerkerFunctieDropDown" [value]="functie.id">
-        {{functie.naam}}
+        {{ functie.naam }}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field>
-    <mat-select required placeholder="Team" formControlName="teamId" >
+  <!-- Team -->
+  <mat-form-field appearance="outline">
+    <mat-select required placeholder="Team" formControlName="teamId">
       <mat-option *ngFor="let team of teamDropDown" [value]="team.id">
-        {{team.naam}}
+        {{ team.naam }}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field>
-    <mat-select [multiple]="true" required placeholder="Planbaar door teams"
-                formControlName="planbaarDoorTeamIds">
+  <!-- Planbaar door teams -->
+  <mat-form-field appearance="outline">
+    <mat-select [multiple]="true" required placeholder="Planbaar door teams" formControlName="planbaarDoorTeamIds">
       <mat-option *ngFor="let team of teamDropDown" [value]="team.id">
-        {{team.naam}}
+        {{ team.naam }}
       </mat-option>
     </mat-select>
   </mat-form-field>
+
+  <!-- Datums -->
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Startdatum</mat-label>
+      <input matInput [matDatepicker]="startdatumPicker" formControlName="startdatum">
+      <mat-datepicker-toggle matSuffix [for]="startdatumPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startdatumPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Einddatum</mat-label>
+      <input matInput [matDatepicker]="einddatumPicker" formControlName="einddatum">
+      <mat-datepicker-toggle matSuffix [for]="einddatumPicker"></mat-datepicker-toggle>
+      <mat-datepicker #einddatumPicker></mat-datepicker>
+    </mat-form-field>
+  </div>
 
 </mat-dialog-content>
 
-<mat-dialog-actions>
-  <button class="mat-raised-button" (click)="close()">Sluiten</button>
-  <button [disabled]="!form.valid" class="mat-raised-button mat-primary" (click)="save()">{{saveButtonText}}</button>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="close()">Annuleren</button>
+  <button mat-flat-button color="primary" [disabled]="!form.valid" (click)="save()">{{ saveButtonText }}</button>
 </mat-dialog-actions>
+
+
 
