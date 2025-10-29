@@ -1,96 +1,109 @@
-<h2 mat-dialog-title>{{title}}</h2>
+<h2 mat-dialog-title>{{ title }}</h2>
 
-<mat-dialog-content class="grid" [formGroup]="form" >
+<mat-dialog-content [formGroup]="form" class="form-container">
 
-
-  <table class="example-full-width"><tr>
-    <td><mat-form-field  class="xs">
-      <input matInput placeholder="Uren" required maxlength="3" formControlName="uren" pattern="^[0-9]*$">
-      <mat-error *ngIf="form.get('uren').invalid">
+  <!-- Rij 1: Uren + Plan datum -->
+  <div class="row">
+    <mat-form-field class="half-width" appearance="outline">
+      <mat-label>Uren</mat-label>
+      <input 
+        matInput 
+        required 
+        maxlength="3" 
+        formControlName="uren" 
+        pattern="^[0-9]*$">
+      <mat-error *ngIf="form.get('uren')?.invalid">
         Voer het aantal uur in
       </mat-error>
-    </mat-form-field></td>
-    <!-- <td><mat-form-field class="xs">
-      <input matInput placeholder="Week nr." [ngModelOptions]="{standalone: true}" type="number" (change)="plannedDateShouldChange()" min="1" max="52" [(ngModel)]="geplandeWeeknummer" >
-    </mat-form-field></td>
-    <td><mat-form-field class="xs">
-      <input matInput placeholder="Jaar" [ngModelOptions]="{standalone: true}" type="number"  (change)="plannedDateShouldChange()" min="1925" max="2125" [(ngModel)]="geplandeJaar" >
-    </mat-form-field></td> -->
-    <td><mat-form-field  class="large">
-      <input [(ngModel)]="plannedDate" matInput [matDatepicker]="plannedDatePicker"  placeholder="plan datum"  [ngModelOptions]="{standalone: true}">
-      <mat-datepicker-toggle  matSuffix [for]="plannedDatePicker"></mat-datepicker-toggle>
+    </mat-form-field>
+
+    <mat-form-field class="half-width" appearance="outline">
+      <mat-label>Plan datum</mat-label>
+      <input 
+        matInput 
+        [(ngModel)]="plannedDate" 
+        [matDatepicker]="plannedDatePicker" 
+        placeholder="Kies een datum" 
+        [ngModelOptions]="{standalone: true}">
+      <mat-datepicker-toggle matSuffix [for]="plannedDatePicker"></mat-datepicker-toggle>
       <mat-datepicker #plannedDatePicker></mat-datepicker>
-    </mat-form-field></td>
-    <!--<td><mat-form-field class="example-full-width">
-      <input matInput placeholder="Weeknummer" minlength="2" maxlength="2" #weeknummer formControlName="weeknummer">
-      <mat-hint align="end">{{weeknummer.value.length}} / 2</mat-hint>
-    </mat-form-field></td>
-    <td><mat-form-field class="example-full-width">
-      <input matInput placeholder="Jaar" minlength="4" maxlength="4" #jaar formControlName="jaar">
-      <mat-hint align="end">{{jaar.value.length}} / 4</mat-hint>
-    </mat-form-field></td>-->
-  </tr></table>
+    </mat-form-field>
+  </div>
 
-  <mat-form-field *ngIf="medewerkerId">
-    <mat-select required placeholder="Medewerker" formControlName="medewerkerId" >
-      <mat-option *ngFor="let medewerker of medewerkersDropDown" [value]="medewerker.id">
-        {{medewerker.naam}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <!-- Medewerker -->
+  <div class="row">
+    <mat-form-field class="full-width" appearance="outline" *ngIf="medewerkerId">
+      <mat-label>Medewerker</mat-label>
+      <mat-select required formControlName="medewerkerId">
+        <mat-option *ngFor="let medewerker of medewerkersDropDown" [value]="medewerker.id">
+          {{ medewerker.naam }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <!--Made 'medewerker' require at least one entry-->
-  <mat-form-field *ngIf="!medewerkerId">
-    <mat-select [multiple]="true"  required placeholder="Medewerker" formControlName="medewerkerIds" >
-      <mat-option *ngFor="let medewerker of medewerkersDropDown" [value]="medewerker.id">
-        {{medewerker.naam}}
-      </mat-option>
-    </mat-select>
-    <mat-error *ngIf="form.get('medewerkerIds')?.hasError('required') && form.get('medewerkerIds')?.touched">
-      Minimaal 1 medewerker is verplicht
-    </mat-error>
-  </mat-form-field>
-  
-  <!-- <div *ngIf="!klantOrIndirectIsProvided" class="warning">
-    * Klant of Indirecte uren dienen minimaal gevuld te zijn.
-  </div> -->
+    <mat-form-field class="full-width" appearance="outline" *ngIf="!medewerkerId">
+      <mat-label>Medewerker</mat-label>
+      <mat-select [multiple]="true" required formControlName="medewerkerIds">
+        <mat-option *ngFor="let medewerker of medewerkersDropDown" [value]="medewerker.id">
+          {{ medewerker.naam }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('medewerkerIds')?.hasError('required') && form.get('medewerkerIds')?.touched">
+        Minimaal 1 medewerker is verplicht
+      </mat-error>
+    </mat-form-field>
+  </div>
 
-  <!--Made 'klant' required-->
-  <mat-form-field>
-      <mat-select (selectionChange)="getBookyears($event)" required placeholder="Klant" formControlName="klantId" >
-      <mat-option>Geen klant</mat-option>
-      <mat-option *ngFor="let klant of klantenDropDown" [value]="klant.id">
-        {{klant.naam}}
-      </mat-option>
-    </mat-select>
-    <mat-error *ngIf="form.get('klantId')?.hasError('required') && form.get('klantId')?.touched">
-      Klant is verplicht
-    </mat-error>
-  </mat-form-field>
+  <!-- Klant -->
+  <div class="row">
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Klant</mat-label>
+      <mat-select (selectionChange)="getBookyears($event)" required formControlName="klantId">
+        <mat-option>Geen klant</mat-option>
+        <mat-option *ngFor="let klant of klantenDropDown" [value]="klant.id">
+          {{ klant.naam }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('klantId')?.hasError('required') && form.get('klantId')?.touched">
+        Klant is verplicht
+      </mat-error>
+    </mat-form-field>
+  </div>
 
-  <mat-form-field>
-    <mat-select (selectionChange)="setIndirecteUren($event)" placeholder="Indirecte uren" formControlName="indirecteUrenId" >
-      <mat-option>Geen indirecte uren</mat-option>
-      <mat-option *ngFor="let indirecteUren of indirecteUrenDropDown" [value]="indirecteUren.id">
-        {{indirecteUren.naam}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <!-- Indirecte uren -->
+  <div class="row">
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Indirecte uren</mat-label>
+      <mat-select (selectionChange)="setIndirecteUren($event)" required formControlName="indirecteUrenId">
+        <mat-option>Geen indirecte uren</mat-option>
+        <mat-option *ngFor="let indirecteUren of indirecteUrenDropDown" [value]="indirecteUren.id">
+          {{ indirecteUren.naam }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-  <mat-form-field>
-    <mat-select placeholder="Opdracht" formControlName="opdrachtId" >
-      <mat-option>Geen opdracht</mat-option>
-      <mat-option *ngFor="let opdracht of opdrachtenDropDown" [value]="opdracht.id">
-        {{opdracht.naam}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <!-- Opdracht -->
+  <div class="row">
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Opdracht</mat-label>
+      <mat-select required formControlName="opdrachtId">
+        <mat-option>Geen opdracht</mat-option>
+        <mat-option *ngFor="let opdracht of opdrachtenDropDown" [value]="opdracht.id">
+          {{ opdracht.naam }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
 </mat-dialog-content>
 
-<mat-dialog-actions>
-  <button class="mat-raised-button" (click)="close()">Sluiten</button>
-  <button [disabled]="!form.valid || klantOrIndirectIsProvided === false" class="mat-raised-button mat-primary" (click)="save()">{{saveButtonText}}</button>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="close()">Annuleren</button>
+  <button mat-flat-button color="primary" [disabled]="!form.valid" (click)="save()">
+    {{ saveButtonText }}
+  </button>
 </mat-dialog-actions>
 
 <mat-error *ngIf="errorMessage" class="error-message">
