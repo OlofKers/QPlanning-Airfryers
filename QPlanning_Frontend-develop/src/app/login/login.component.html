@@ -1,29 +1,32 @@
 <div class="main-div">
-  <mat-card id="login-form"class="example-card">
-    <mat-card-header>
-      <mat-card-title>QPlanning Login</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form class="example-form">
-        <table class="example-full-width" cellspacing="0">
-          <tr>
-            <td>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Gebruikersnaam" [(ngModel)]="username" name="username" required>
-              </mat-form-field>
-            </td>
-          </tr>
-          <tr>
-            <td><mat-form-field class="example-full-width">
-              <input matInput placeholder="Wachtwoord" [(ngModel)]="password"type="password" name="password" required>
-            </mat-form-field></td>
-          </tr></table>
-      </form>
-     <mat-spinner [style.display]="isLoading ? 'block' : 'none'"></mat-spinner>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button (click)="login()" class="qBlue">Login</button>
-    </mat-card-actions>
-  </mat-card>
+  <div id="left-half">
+    <p id="login-title">Qplanning</p>
+    <mat-card id="login-card" class="login-card">
+      <mat-card-content>
+        <form class="login-form">
+          <mat-form-field appearance="outline" class="login-field">
+            <mat-label>Gebruikersnaam</mat-label>
+            <input matInput [(ngModel)]="username" name="username" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="login-field">
+            <mat-label>Wachtwoord</mat-label>
+            <input matInput [(ngModel)]="password" type="password" name="password" required>
+            <button mat-icon-button matSuffix type="button">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" class="login-button" (click)="login()">
+            Inloggen
+          </button>
+
+          <a href="#" class="forgot-password">Wachtwoord vergeten?</a>
+        </form>
+
+        <mat-spinner [style.display]="isLoading ? 'block' : 'none'"></mat-spinner>
+      </mat-card-content>
+    </mat-card>
+  </div>
   <img id="login-image" src="../../assets/images/login-image.png" alt="image">
 </div>
