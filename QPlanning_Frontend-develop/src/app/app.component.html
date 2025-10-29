@@ -1,5 +1,5 @@
 <body>
-  <mat-toolbar color="primary">
+  <mat-toolbar *ngIf="isLoggedIn" color="primary">
     <mat-toolbar-row>
       <!-- Logo/Home button (vervangt aparte Overzicht knop) -->
       <a mat-button class="logo-button" routerLink="/">
