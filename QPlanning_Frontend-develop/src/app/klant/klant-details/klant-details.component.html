@@ -1,107 +1,81 @@
-<h2 mat-dialog-title>{{title}}</h2>
+<h2 mat-dialog-title>{{ title }}</h2>
 
-<mat-dialog-content class="grid" [formGroup]="form">
+<mat-dialog-content [formGroup]="form" class="form-container">
 
+  <!-- Naamvelden -->
+  <mat-form-field appearance="outline">
+    <mat-label>Voornaam</mat-label>
+    <input matInput required formControlName="voornaam">
+  </mat-form-field>
 
-<!--Split the name fields-->
-  <table class="example-full-width">
-    <tr>
-      <td>
-        <mat-form-field class="example-full-width">
-          <input matInput required placeholder="Voornaam" formControlName="voornaam">
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field class ="example-full-width">
-          <input matInput required placeholder="Achternaam" formControlName="achternaam">
-        </mat-form-field>
-      </td>
-    </tr>
-  </table>
+  <mat-form-field appearance="outline">
+    <mat-label>Achternaam</mat-label>
+    <input matInput required formControlName="achternaam">
+  </mat-form-field>
 
-  <table class="example-full-width" *ngIf="!isEdit">
-    <tr>
-      <td>
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Boekjaar" minlength="4" maxlength="4" #boekjaar formControlName="boekjaar">
-          <mat-hint align="end">{{boekjaar.value.length}} / 4</mat-hint>
-        </mat-form-field>
-      </td>
+  <!-- Partner/manager -->
+  <mat-form-field appearance="outline" class="span-2">
+    <mat-label>Partner/Manager</mat-label>
+    <mat-select required formControlName="medewerkerId">
+      <mat-option *ngFor="let medewerker of medewerkersDropDown" [value]="medewerker.id">
+        {{ medewerker.naam }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-      <!--Olaf - Restricted Budget field to only accept numbers and added an error message-->
-      <!--Kyan - Budget euroteken toegevoegd -->
-      <td>
-        <mat-form-field class="example-full-width">
-         <span matPrefix>€&nbsp;</span>
-         <input matInput placeholder="Budget" required maxlength="8" formControlName="budget" pattern="^[0-9]*$">
-         <mat-error *ngIf="form.get('budget')?.hasError('required') && form.get('budget')?.touched">
-           Budget in hele euro's
-          </mat-error>
-       </mat-form-field>
-    </td>
-    </tr>
-  </table>  
-  
-  <table class="example-full-width">
-    <tr>
-      <mat-form-field>
-        <mat-select required placeholder="Partner/Manager" formControlName="medewerkerId">
-          <mat-option *ngFor="let medewerker of medewerkersDropDown" [value]="medewerker.id">
-            {{medewerker.naam}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </tr>
-  </table>
+  <!-- Boekjaar & Budget -->
+  <mat-form-field appearance="outline">
+    <mat-label>Boekjaar</mat-label>
+    <input matInput minlength="4" maxlength="4" formControlName="boekjaar">
+  </mat-form-field>
 
-  <table class="example-full-width">
-    <tr>
-      <td>
-        <mat-form-field>
-          <mat-select required placeholder="Verantwoordelijk team" formControlName="verantwoordelijkTeamId">
-            <mat-option *ngFor="let team of teamDropDown" [value]="team.id">
-              {{team.naam}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field>
-          <mat-select [multiple]="true" placeholder="Planbaar door teams"
-                      formControlName="planbaarDoorTeamIds">
-            <mat-option *ngFor="let team of teamDropDown" [value]="team.id">
-              {{team.naam}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </td>
-    </tr>
-  </table>
+  <mat-form-field appearance="outline">
+    <mat-label>Budget</mat-label>
+    <input matInput required maxlength="8" formControlName="budget" pattern="^[0-9]*$">
+    <mat-error *ngIf="form.get('budget')?.hasError('required') && form.get('budget')?.touched">
+      Budget in hele euro's
+    </mat-error>
+  </mat-form-field>
 
-  <table class="example-full-width">
-    <tr>
-      <td>
-        <mat-form-field>
-          <input matInput [matDatepicker]="startdatumPicker" placeholder="Startdatum" formControlName="startdatum">
-          <mat-datepicker-toggle matSuffix [for]="startdatumPicker"></mat-datepicker-toggle>
-          <mat-datepicker #startdatumPicker></mat-datepicker>
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field>
-          <input matInput [matDatepicker]="einddatumPicker" placeholder="Einddatum" formControlName="einddatum">
-          <mat-datepicker-toggle matSuffix [for]="einddatumPicker"></mat-datepicker-toggle>
-          <mat-datepicker #einddatumPicker></mat-datepicker>
-        </mat-form-field>
-      </td>
-    </tr>
-  </table>
+  <!-- Teams -->
+  <mat-form-field appearance="outline">
+    <mat-label>Verantwoordelijk team</mat-label>
+    <mat-select required formControlName="verantwoordelijkTeamId">
+      <mat-option *ngFor="let team of teamDropDown" [value]="team.id">
+        {{ team.naam }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Planbaar door teams</mat-label>
+    <mat-select [multiple]="true" formControlName="planbaarDoorTeamIds">
+      <mat-option *ngFor="let team of teamDropDown" [value]="team.id">
+        {{ team.naam }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Datums -->
+  <mat-form-field appearance="outline">
+    <mat-label>Startdatum</mat-label>
+    <input matInput [matDatepicker]="startdatumPicker" formControlName="startdatum">
+    <mat-datepicker-toggle matSuffix [for]="startdatumPicker"></mat-datepicker-toggle>
+    <mat-datepicker #startdatumPicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Einddatum</mat-label>
+    <input matInput [matDatepicker]="einddatumPicker" formControlName="einddatum">
+    <mat-datepicker-toggle matSuffix [for]="einddatumPicker"></mat-datepicker-toggle>
+    <mat-datepicker #einddatumPicker></mat-datepicker>
+  </mat-form-field>
 
 </mat-dialog-content>
 
-<mat-dialog-actions>
-  <button class="mat-raised-button" (click)="close()">Sluiten</button>
-  <button [disabled]="!form.valid" class="mat-raised-button mat-primary" (click)="save()">{{saveButtonText}}</button>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="close()">Annuleren</button>
+  <button mat-flat-button color="primary" [disabled]="!form.valid" (click)="save()">
+    {{ saveButtonText }}
+  </button>
 </mat-dialog-actions>
-
-
