@@ -1,90 +1,57 @@
-/* Achtergrond en centrering */
-body {
-  background-color: #6d8c8d; /* zelfde zachte blauwgroene tint */
+.grid{
+  display: grid;
+}
+
+.no-inline-block
+{
+  display: initial;
+}
+/* Ronde, volle velden */
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #f5f5f5; /* lichte achtergrond */
+  border-radius: 12px;        /* ronde hoeken */
+  padding: 0 12px;
+}
+
+.mat-form-field-appearance-fill.mat-form-field-invalid .mat-form-field-flex {
+  background-color: #ffebee; /* lichte rode achtergrond bij fout */
+}
+
+.mat-form-field-appearance-fill .mat-form-field-infix {
+  padding: 14px 0; /* verticale padding voor prettige ruimte */
+}
+
+/* Huidige layout behoud */
+.form-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-family: "Inter", Arial, sans-serif;
+  flex-direction: column;
+  gap: 16px;
 }
 
-/* Container van het formulier */
-.user-form-container {
-  background-color: #ffffff;
-  padding: 28px 36px;
-  border-radius: 16px;
-  width: 340px; /* iets breder */
+.row {
+  display: flex;
+  gap: 16px;
 }
 
-/* Titel */
-.user-form-container h2 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 20px;
-  text-align: left;
-  color: #333;
-}
-
-/* Formuliervelden */
-.user-form-container input[type="text"],
-.user-form-container input[type="email"],
-.user-form-container input[type="password"] {
+.full-width {
   width: 100%;
-  padding: 12px 14px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  outline: none;
-  transition: border-color 0.2s ease;
-  margin-bottom: 18px; /* extra ruimte tussen velden */
 }
 
-/* Maak e-mail en wachtwoordvelden langer */
-.user-form-container input[type="email"],
-.user-form-container input[type="password"] {
-  width: 110%; /* iets langer dan de container */
-  transform: translateX(-5%); /* centreren */
+.half-width {
+  width: 50%;
 }
 
-.user-form-container input:focus {
-  border-color: #3f51b5;
+.hint-text {
+  font-size: 0.85rem;
+  color: #555;
+  margin: -8px 0 16px 0;
 }
 
-/* Knoppenrij */
-.button-row {
+.naamvelden {
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 16px; /* ruimte tussen voor- en achternaam */
 }
 
-/* Knoppenstijl */
-button {
-  flex: 1;
-  padding: 10px 0;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.2s ease;
-}
-
-/* Grijze 'Annuleren' knop */
-button.cancel {
-  background-color: #f0f0f0;
-  color: #333;
-}
-
-button.cancel:hover {
-  background-color: #e0e0e0;
-}
-
-/* Donkere 'Gebruiker toevoegen' knop */
-button.submit {
-  background-color: #333;
-  color: #fff;
-}
-
-button.submit:hover {
-  background-color: #000;
+.naamvelden mat-form-field {
+  flex: 1; /* laat beide velden even breed zijn */
 }
