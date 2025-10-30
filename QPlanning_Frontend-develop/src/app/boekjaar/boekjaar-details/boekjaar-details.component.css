@@ -1,0 +1,44 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Zorgt dat velden in één rij naast elkaar staan */
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Breedte van elk invulveld */
+.half-width {
+  flex: 1;
+  min-width: 250px;
+}
+
+/* Optionele stijl voor mooiere outlines */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  border-radius: 10px;
+}
+
+.mat-form-field-appearance-outline {
+  border-radius: 10px;
+}
+
+/* Hover effect */
+.mat-form-field-appearance-outline:hover .mat-form-field-outline-thick {
+  color: #3f51b5;
+}
+
+/* Subtiele tekst */
+mat-hint {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+mat-error {
+  font-size: 0.8rem;
+  color: #d32f2f;
+}

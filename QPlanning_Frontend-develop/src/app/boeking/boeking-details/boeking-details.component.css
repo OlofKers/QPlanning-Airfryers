@@ -14,3 +14,67 @@
 .large{
   width: 120px;
 }
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+/* Zorgt dat velden naast elkaar staan waar nodig */
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Breedte van de velden */
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  flex: 1;
+  min-width: 250px;
+}
+
+/* Outline-stijl consistent houden */
+.mat-form-field-appearance-outline {
+  background-color: #fafafa;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: 4px 8px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  border-radius: 10px;
+}
+
+/* Hover accentkleur */
+.mat-form-field-appearance-outline:hover .mat-form-field-outline-thick {
+  color: #3f51b5;
+}
+
+/* Labelkleur bij focus */
+.mat-focused .mat-form-field-label {
+  color: #3f51b5 !important;
+}
+
+/* Hint & error text styling */
+mat-hint {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+mat-error {
+  font-size: 0.8rem;
+  color: #d32f2f;
+}
+
+/* Klein extra detail voor spacing in dialog */
+mat-dialog-content {
+  max-height: 80vh;
+  overflow: auto;
+}

@@ -1,36 +1,50 @@
-<h2 mat-dialog-title>{{title}}</h2>
+<h2 mat-dialog-title>{{ title }}</h2>
 
-<mat-dialog-content class="grid" [formGroup]="form">
+<mat-dialog-content [formGroup]="form" class="form-container">
 
-  <mat-form-field>
-    <input matInput required
-           placeholder="Voornaam"
-           formControlName="voornaam">
-  </mat-form-field>
+  <!-- Rij 1: Voornaam + Achternaam -->
+  <div class="row">
+    <mat-form-field class="half-width" appearance="outline">
+      <mat-label>Voornaam</mat-label>
+      <input matInput required formControlName="voornaam">
+    </mat-form-field>
 
-  <mat-form-field>
-    <input matInput required
-           placeholder="Achternaam"
-           formControlName="achternaam">
-  </mat-form-field>
+    <mat-form-field class="half-width" appearance="outline">
+      <mat-label>Achternaam</mat-label>
+      <input matInput required formControlName="achternaam">
+    </mat-form-field>
+  </div>
 
-  <mat-form-field>
-    <input matInput required
-           placeholder="Email (dit is tevens uw gebruikersnaam bij het inloggen!)"
-           formControlName="email">
-  </mat-form-field>
+  <!-- Rij 2: Email -->
+  <div class="row">
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Email (dit is tevens uw gebruikersnaam bij het inloggen!)</mat-label>
+      <input matInput required formControlName="email">
+    </mat-form-field>
+  </div>
 
-  <mat-form-field *ngIf="modalMode === 0" >
-    <input matInput required
-           type="password"
-           placeholder="Wachtwoord"
-           formControlName="password">
-    <mat-hint align="begin">Minimaal één hoofdletter, één kleine letter, één cijfer én minimaal 8 karakters lang.</mat-hint>
-  </mat-form-field>
+  <!-- Rij 3: Wachtwoord (alleen bij modalMode === 0) -->
+  <div class="row" *ngIf="modalMode === 0">
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Wachtwoord</mat-label>
+      <input 
+        matInput 
+        required 
+        type="password" 
+        formControlName="password">
+      <mat-hint align="begin">
+        Minimaal één hoofdletter, één kleine letter, één cijfer én minimaal 8 karakters lang.
+      </mat-hint>
+    </mat-form-field>
+  </div>
 
 </mat-dialog-content>
 
-<mat-dialog-actions>
-  <button class="mat-raised-button" (click)="close()">Sluiten</button>
-  <button [disabled]="!form.valid" class="mat-raised-button mat-primary" (click)="save()">{{saveTitle}}</button>
+
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="close()">Annuleren</button>
+  <button mat-flat-button color="primary" [disabled]="!form.valid" (click)="save()">
+    {{ saveTitle }}
+  </button>
 </mat-dialog-actions>

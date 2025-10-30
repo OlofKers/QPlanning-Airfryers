@@ -1,36 +1,48 @@
-<h2 mat-dialog-title>{{title}}</h2>
+<h2 mat-dialog-title>{{ title }}</h2>
 
-<mat-dialog-content class="grid" [formGroup]="form">
+<mat-dialog-content [formGroup]="form" class="form-container">
 
+  <div class="row">
+    <!-- Boekjaar -->
+    <mat-form-field class="half-width" appearance="outline">
+      <mat-label>Boekjaar</mat-label>
+      <input 
+        matInput 
+        minlength="4" 
+        maxlength="4" 
+        #boekjaar 
+        formControlName="boekjaar" 
+        pattern="^[0-9]*$"
+        required>
+      <mat-hint align="end">{{ boekjaar.value.length }} / 4</mat-hint>
+      <mat-error *ngIf="form.get('boekjaar')?.hasError('required') && form.get('boekjaar')?.touched">
+        Voer een geldig jaartal in
+      </mat-error>
+    </mat-form-field>
 
-<table class="example-full-width">
-  <tr>
-    <!--Added character restriction and an error message-->
-    <td>
-      <mat-form-field class="example-full-width">
-        <input matInput placeholder="Boekjaar" minlength="4" maxlength="4" #boekjaar formControlName="boekjaar" pattern="^[0-9]*$">
-        <mat-hint align="end">{{boekjaar.value.length}} / 4</mat-hint>
-        <mat-error *ngIf="form.get('boekjaar')?.hasError('required') && form.get('boekjaar')?.touched">
-            Voer een geldig jaartal in
-        </mat-error>
-      </mat-form-field>
-    </td>
-
-    <!--Added character restriction and an error message-->
-    <td>
-      <mat-form-field class="example-full-width">
-        <input matInput placeholder="Bedrag (in hele euro)" required maxlength="8" formControlName="bedrag" pattern="^[0-9]*$">
-          <mat-error *ngIf="form.get('bedrag')?.hasError('required') && form.get('bedrag')?.touched">
-            Voer een geldig getal in
-          </mat-error>
-      </mat-form-field>
-    </td>
-  </tr>
-</table>
+    <!-- Bedrag -->
+    <mat-form-field class="half-width" appearance="outline">
+      <mat-label>Bedrag (in hele euro)</mat-label>
+      <input 
+        matInput 
+        required 
+        maxlength="8" 
+        formControlName="bedrag" 
+        pattern="^[0-9]*$">
+      <mat-error *ngIf="form.get('bedrag')?.hasError('required') && form.get('bedrag')?.touched">
+        Voer een geldig getal in
+      </mat-error>
+    </mat-form-field>
+  </div>
 
 </mat-dialog-content>
 
-  <mat-dialog-actions>
-    <button class="mat-raised-button" (click)="close()">Sluiten</button>
-    <button [disabled]="!form.valid" class="mat-raised-button mat-primary" (click)="save()">{{saveButtonText}}</button>
-  </mat-dialog-actions>
+
+
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="close()">Annuleren</button>
+  <button mat-flat-button color="primary" [disabled]="!form.valid" (click)="save()">
+    {{ saveButtonText }}
+  </button>
+</mat-dialog-actions>
