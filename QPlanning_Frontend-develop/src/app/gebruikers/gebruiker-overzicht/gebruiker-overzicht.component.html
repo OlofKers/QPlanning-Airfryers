@@ -1,13 +1,24 @@
-<button class="button-right" mat-button (click)="addUser()">
-  <mat-icon>add_circle</mat-icon>
+<div class="page-container">
+<div class="header-container">
+  <h2 class="page-title">Gebruiker beheren</h2>
+<button mat-raised-button color="primary" (click)="addUser()">
   Gebruiker toevoegen
 </button>
-
-<div fxLayout fxLayoutAlign="center center">
-  <mat-form-field fxFlex="40%">
-    <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
-  </mat-form-field>
 </div>
+
+
+  <div class="filter-section">
+    <!-- Filter -->
+    <div class="filter-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Filter</mat-label>
+        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+
+      <button mat-icon-button class="search-button" (click)="getAllBookingRecords()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
 
 <table mat-table [dataSource]="dataSource" class="customTable-fullscreen" matSort>
   <ng-container matColumnDef="Voornaam">
