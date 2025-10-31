@@ -56,8 +56,9 @@ tr.mat-footer-row {
   margin-bottom: 15px;
 }
 
-/* 🔹 LINKERZIJDE (vanaf, tot, team, zoek) */
+/* LINKERZIJDE (vanaf, tot, team, zoek) */
 .filter-group {
+  margin-bottom: 20px;
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
