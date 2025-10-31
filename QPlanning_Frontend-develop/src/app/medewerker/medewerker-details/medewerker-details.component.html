@@ -26,11 +26,13 @@
   <!-- Tarieven -->
   <div class="row">
     <mat-form-field class="half-width" appearance="outline">
+            <span matPrefix>€&nbsp;</span>
       <input matInput required placeholder="Tarief" minlength="1" maxlength="3" #tarief formControlName="tarief" pattern="^[0-9]*$">
       <mat-hint align="end">{{ tarief.value.length }} / 3</mat-hint>
     </mat-form-field>
 
     <mat-form-field class="half-width" appearance="outline">
+            <span matPrefix>€&nbsp;</span>
       <input matInput required placeholder="Intern Tarief" minlength="1" maxlength="3" #internTarief formControlName="internTarief" pattern="^[0-9]*$">
       <mat-hint align="end">{{ internTarief.value.length }} / 3</mat-hint>
     </mat-form-field>

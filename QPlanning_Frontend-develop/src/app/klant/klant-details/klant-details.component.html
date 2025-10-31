@@ -14,15 +14,6 @@
   </mat-form-field>
 </div>
 
-  <!-- Partner/manager -->
-  <mat-form-field appearance="outline" class="span-2">
-    <mat-label>Partner/Manager</mat-label>
-    <mat-select required formControlName="medewerkerId">
-      <mat-option *ngFor="let medewerker of medewerkersDropDown" [value]="medewerker.id">
-        {{ medewerker.naam }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
 
   <!-- Boekjaar & Budget -->
   <mat-form-field appearance="outline">
@@ -32,10 +23,21 @@
 
   <mat-form-field appearance="outline">
     <mat-label>Budget</mat-label>
+      <span matPrefix>€&nbsp;</span>
     <input matInput required maxlength="8" formControlName="budget" pattern="^[0-9]*$">
     <mat-error *ngIf="form.get('budget')?.hasError('required') && form.get('budget')?.touched">
       Budget in hele euro's
     </mat-error>
+  </mat-form-field>
+
+    <!-- Partner/manager -->
+  <mat-form-field appearance="outline" class="span-2">
+    <mat-label>Partner/Manager</mat-label>
+    <mat-select required formControlName="medewerkerId">
+      <mat-option *ngFor="let medewerker of medewerkersDropDown" [value]="medewerker.id">
+        {{ medewerker.naam }}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
 
   <!-- Teams -->
