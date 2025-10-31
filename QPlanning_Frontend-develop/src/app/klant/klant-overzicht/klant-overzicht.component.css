@@ -1,7 +1,7 @@
 .button-right{
   position: absolute;
   right: 10%;
-  margin: 0;
+  margin: 15px;
 }
 
 tr.mat-footer-row {
@@ -29,3 +29,219 @@ tr.mat-footer-row {
 {
   margin-right: 150px;
 }
+
+:host {
+  display: block;
+  background-color: #f8f9fb;
+  padding: 30px 40px;
+  font-family: "Inter", "Roboto", sans-serif;
+  color: #222;
+}
+
+/* PAGINA TITEL */
+.page-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 25px;
+}
+
+/* FILTER-BALK */
+.filter-section {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+/* 🔹 LINKERZIJDE (vanaf, tot, team, zoek) */
+.filter-group {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Zoekknop */
+.search-button {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border: 1px solid #cfcfcf;
+  background-color: #fff;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-button:hover {
+  background-color: #f2f2f2;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+.search-button mat-icon {
+  font-size: 18px;
+  color: #444;
+}
+
+/* RECHTERZIJDE (filters + knop) */
+.filters-group {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filters-label {
+  font-weight: 600;
+  margin-right: 6px;
+  color: #000;
+  font-size: 0.9rem;
+}
+
+/* ALGEMENE FORM FIELD STYLING */
+mat-form-field {
+  width: 145px;
+  height: 40px;
+  --mdc-outlined-text-field-outline-color: #d0d0d0;
+  --mdc-outlined-text-field-hover-outline-color: #a8a8a8;
+  --mdc-outlined-text-field-focus-outline-color: #1976d2;
+}
+
+mat-form-field.filter-input {
+  width: 130px;
+}
+
+mat-label {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* BOEKING TOEVOEGEN */
+.add-button {
+  background-color: #e8ebef;
+  color: #000;
+  font-weight: 500;
+  border-radius: 6px;
+  height: 36px;
+  padding: 0 14px;
+  font-size: 0.85rem;
+  border: 1px solid #d0d0d0;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-button:hover {
+  background-color: #dfe3e8;
+  box-shadow: 0 0 3px rgba(0,0,0,0.15);
+}
+
+/* 📋 TABEL */
+.customTable-fullscreen {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 6px;
+  border-collapse: collapse;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.mat-header-cell {
+  background-color: #e7f0f9;
+  color: #1e497d;
+  font-weight: 600;
+  border-bottom: 2px solid #d1e0f0;
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+}
+
+.mat-cell,
+.mat-footer-cell {
+  padding: 10px 14px;
+  border-bottom: 1px solid #e6e6e6;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.mat-row:hover {
+  background-color: #f6faff;
+}
+
+/* FOOTER TOTALEN */
+tr.mat-footer-row {
+  font-weight: bold;
+  background-color: #fafafa;
+  border-top: 2px solid #ddd;
+}
+
+.mat-footer-cell {
+  text-align: left;
+  padding: 10px 14px;
+}
+
+.mat-column-Hours .mat-footer-cell {
+  text-align: left;
+}
+
+/* ICONEN */
+mat-icon {
+  font-size: 18px !important;
+  vertical-align: middle;
+}
+
+/* Bewerken & verwijderen */
+button[mat-icon-button] {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button[mat-icon-button]:hover {
+  transform: scale(1.08);
+  transition: transform 0.2s ease;
+}
+
+/* PAGINATOR */
+mat-paginator {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ALGEMENE RUIMTE */
+.filters-row,
+.filter-bar {
+  margin-bottom: 15px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px; /* kleine ruimte tussen knoppen */
+}
+
+
+.page-title {
+  margin: 0; /* verwijder standaard marge van h2 */
+}
+
+.header-container button {
+  height: 36px; /* of een hoogte die bij je layout past */
+}
+
