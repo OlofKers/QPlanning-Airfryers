@@ -28,7 +28,7 @@
   margin-bottom: 15px;
 }
 
-/* 🔹 Filtergroep met datums + knoppen */
+/* Filtergroep met datums + knoppen */
 .filter-group {
   display: flex;
   align-items: flex-end;
@@ -37,7 +37,7 @@
 }
 
 
-/* 🔹 Knoppen naast de filters — hoogte fix */
+/* Knoppen naast de filters — hoogte fix */
 .filter-group button {
   margin-bottom: 35px;
   display: flex;
@@ -51,7 +51,7 @@
   margin-left: auto;
 }
 
-/* 🔹 Algemene tabel */
+/* Algemene tabel */
 .planning-table {
   width: 100%;
   border-collapse: collapse;
@@ -62,14 +62,14 @@
   table-layout: fixed;
 }
 
-/* 🔹 Sticky header */
+/* Sticky header */
 .sticky {
   position: sticky;
   top: 0;
   z-index: 2;
 }
 
-/* 🔹 Header styling */
+/* Header styling */
 .ZuydPlanningHeader th {
   border: 1px solid #b7c4d1;
   background-color: #85c4f0;
@@ -95,7 +95,7 @@
   color: #e7f2fc;
 }
 
-/* 🔹 Rijen */
+/* Rijen */
 tbody tr {
   transition: background-color 0.2s ease-in-out;
 }
@@ -108,12 +108,12 @@ tbody tr:nth-child(even) {
   background-color: #ffffff;
 }
 
-/* 🔹 Hover op klantregels */
+/* Hover op klantregels */
 .client-row:hover {
   background-color: #e9f2fa;
 }
 
-/* 🔹 Celopmaak */
+/* Celopmaak */
 tbody th,
 tbody td {
   border: 1px solid #b7c4d1;
@@ -125,12 +125,12 @@ tbody th {
   text-align: left;
 }
 
-/* 🔹 Subrijen */
+/* Subrijen */
 .sub-row {
   background-color: #f1f5fb;
 }
 
-/* 🔹 Tekstformattering */
+/* Tekstformattering */
 .smallFont {
   font-size: 12px;
 }
@@ -139,7 +139,7 @@ tbody th {
   font-weight: 600;
 }
 
-/* 🔹 Kleuren uren */
+/* Kleuren uren */
 .qGreen {
   color: #4caf50;
   font-weight: 600;
@@ -155,7 +155,7 @@ tbody th {
   font-weight: 600;
 }
 
-/* 🔹 Expand pijlen */
+/* Expand pijlen */
 .toggle {
   cursor: pointer;
   margin-left: 5px;
@@ -169,7 +169,7 @@ tbody th {
   color: #ff9800;
 }
 
-/* 🔹 Loader en foutmelding */
+/* Loader en foutmelding */
 .loader,
 .error {
   text-align: center;
@@ -181,7 +181,7 @@ tbody th {
   color: #555;
 }
 
-/* 🔹 Responsief gedrag */
+/* Responsief gedrag */
 @media (max-width: 1000px) {
   .planning-table {
     display: block;

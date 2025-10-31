@@ -1,22 +1,28 @@
-<div class="header-container">
-  <div class="filter-section">
-    <mat-form-field appearance="outline" floatLabel="never">
-      <mat-label>Filter klant</mat-label>
-      <input matInput [formControl]="klantFilter" placeholder="Klant naam">
-    </mat-form-field>
+<div class="page-container">
+  <div class="header-container">
+    <h2 class="page-title">Klanten beheren</h2>
+
+    <div class="button-group">
+      <button mat-raised-button color="primary" (click)="addBoekjaren()">
+        Boekjaren opvoeren
+      </button>
+
+      <button mat-raised-button color="primary" (click)="addKlant()">
+        Klant toevoegen
+      </button>
+    </div>
   </div>
 
-  <div class="button-group">
-    <button mat-raised-button color="primary" (click)="addBoekjaren()">
-      Boekjaren opvoeren
-    </button>
-
-    <button mat-raised-button color="primary" (click)="addKlant()">
-      Klant toevoegen
-    </button>
+  <div class="filter-section">
+    <!-- Filter -->
+    <div class="filter-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Zoek Klant</mat-label>
+        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+    </div>
   </div>
 </div>
-
 
 <table mat-table class="customTable-fullscreen" [dataSource]="dataSource" matSort>
   <ng-container matColumnDef="Name">
