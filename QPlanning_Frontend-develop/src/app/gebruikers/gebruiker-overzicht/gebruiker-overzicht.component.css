@@ -20,7 +20,8 @@
   margin-bottom: 25px;
 }
 
-/* FILTER-BALK */
+
+
 .filter-section {
   display: flex;
   align-items: flex-end;
@@ -30,12 +31,11 @@
   margin-bottom: 25px;
 }
 
-/* 🔹 LINKERZIJDE (vanaf, tot, team, zoek) */
 .filter-group {
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 15px
 }
 
 /* Zoekknop */

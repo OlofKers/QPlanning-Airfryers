@@ -80,9 +80,11 @@
     </td>
   </ng-container>
 
+
   <ng-container matColumnDef="delete">
-    <th mat-header-cell *matHeaderCellDef> Activeer/Deactiveer </th>
-    <td mat-cell *matCellDef="let element">
+  <th mat-header-cell *matHeaderCellDef> Activeer/Deactiveer </th>
+  <td mat-cell *matCellDef="let element">
+    <div class="action-buttons">
       <button mat-icon-button color="primary" (click)="redirectToActivate(element.id, true)">
         <mat-icon class="mat-18">check_circle_outline</mat-icon>
       </button>
@@ -90,8 +92,11 @@
       <button mat-icon-button color="warn" (click)="redirectToActivate(element.id, false)">
         <mat-icon class="mat-18">block</mat-icon>
       </button>
-    </td>
-  </ng-container>
+    </div>
+  </td>
+</ng-container>
+
+
 
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
