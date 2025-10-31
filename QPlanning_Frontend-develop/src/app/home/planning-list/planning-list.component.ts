@@ -1,9 +1,9 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {PersonalBooking, User} from '../../_models';
-import {AuthenticationService, RepositoryService} from '../../_services';
-import {Moment} from 'moment';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Moment } from 'moment';
 import * as moment from 'moment';
+import { AuthenticationService, RepositoryService } from '../../_services';
+import { PersonalBooking, User } from '../../_models';
 
 @Component({
   selector: 'app-planning-list',
@@ -11,73 +11,70 @@ import * as moment from 'moment';
   styleUrls: ['./planning-list.component.css']
 })
 export class PlanningListComponent implements OnInit, AfterViewInit {
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-  nonBillableHoursOutput: PersonalBooking[];
-  public displayedColumns = ['Weeknumber', 'Year', 'Subject', 'Hours'];
-  public dataSource = new MatTableDataSource<PersonalBooking>();
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
   currentUser: User;
   startDate: Moment;
   endDate: Moment;
+
   isLoading = false;
   hasError = false;
   areAllCollapsed = true;
 
-  personalPlanningViewModel;
+  personalPlanningViewModel: any;
 
-
-  constructor( private repoService: RepositoryService,
-               private authenticationService: AuthenticationService) {
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+  constructor(
+    private repoService: RepositoryService,
+    private authenticationService: AuthenticationService
+  ) {
+    this.authenticationService.currentUser.subscribe(
+      (x) => (this.currentUser = x)
+    );
     this.startDate = moment().startOf('week');
-    this.endDate = moment(this.startDate, 'YYYY-DD-MM').add(3, 'month').startOf('week').utc(true);
+    this.endDate = moment(this.startDate).add(3, 'month').startOf('week');
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getMyCurrentPlanning();
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-  }
+  ngAfterViewInit(): void {}
 
+  public getMyCurrentPlanning(): void {
+    if (this.isLoading) return;
 
-  public getMyCurrentPlanning = () => {
-    if (!this.isLoading) {
-      this.isLoading = true;
-      this.hasError = false;
-      this.repoService.post('api/boeking/getPersonalBoekingWithinPeriod',
-        {endDate: this.endDate, startDate: this.startDate})
-        .subscribe(res => {
-          // @ts-ignore
-          this.personalPlanningViewModel = res.personalPlanningViewModel as personalPlanningViewModel;
+    this.isLoading = true;
+    this.hasError = false;
+
+    this.repoService
+      .post('api/boeking/getPersonalBoekingWithinPeriod', {
+        startDate: this.startDate,
+        endDate: this.endDate,
+      })
+      .subscribe({
+        next: (res: any) => {
+          this.personalPlanningViewModel = res.personalPlanningViewModel;
           this.isLoading = false;
         },
-          error => this.hasError = true);
-    }
-  }
-
-  public doFilter = (value: string) => {
-    this.dataSource.filter = value.trim().toLocaleLowerCase();
-  }
-
-  public collapseAll() {
-    if (this.areAllCollapsed === true) {
-
-      this.personalPlanningViewModel.topRows.forEach(personalPlanning => {
-        personalPlanning.expanded = true;
+        error: () => {
+          this.hasError = true;
+          this.isLoading = false;
+        },
       });
-      this.areAllCollapsed = false;
-      return;
-    }
-    if (this.areAllCollapsed === false) {
-      this.personalPlanningViewModel.topRows.forEach(personalPlanning => {
-        personalPlanning.expanded = false;
-      });
-      this.areAllCollapsed = true;
-      return;
-    }
   }
 
+  public collapseAll(): void {
+    if (!this.personalPlanningViewModel) return;
+
+    const expand = this.areAllCollapsed;
+    this.personalPlanningViewModel.topRows.forEach(
+      (klant: any) => (klant.expanded = expand)
+    );
+    this.areAllCollapsed = !expand;
+  }
+
+  public toggleExpand(klant: any): void {
+    klant.expanded = !klant.expanded;
+  }
 }

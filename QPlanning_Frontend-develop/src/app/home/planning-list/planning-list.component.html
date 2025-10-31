@@ -1,69 +1,112 @@
-<!--suppress ALL -->
+<div class="welcome-container" *ngIf="currentUser">
+  <h2>Welkom terug, {{ currentUser.naam }}</h2>
+  <p class="subtext">Hier zie je het actuele overzicht van de komende weken in uren weergegeven</p>
+</div>
 <h2>Persoonlijk planningsoverzicht</h2>
 
-<mat-form-field>
-  <mat-label>Vanaf</mat-label>
-  <input [(ngModel)]="startDate" matInput [matDatepicker]="startDatePicker"  placeholder="datum vanaf">
-  <mat-datepicker-toggle  matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-  <mat-datepicker #startDatePicker></mat-datepicker>
-</mat-form-field>
-<mat-form-field class="spacer">
-  <mat-label>Tot en met</mat-label>
-  <input [(ngModel)]="endDate" matInput [matDatepicker]="endDatePicker"  placeholder="tot en met">
-  <mat-datepicker-toggle  matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-  <mat-datepicker #endDatePicker></mat-datepicker>
-</mat-form-field>
-<button class="spacer" [disabled]="isLoading || hasError" mat-button (click)="getMyCurrentPlanning()">Zoek planning</button>
-<button *ngIf="areAllCollapsed" class="spacer  button-right" mat-button (click)="collapseAll()">Alles uitklappen</button>
-<button *ngIf="!areAllCollapsed" class="spacer  button-right" mat-button (click)="collapseAll()">Alles inklappen</button>
+<div class="filter-group">
+  <mat-form-field appearance="outline">
+    <mat-label>Vanaf</mat-label>
+    <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="startDate">
+    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker></mat-datepicker>
+  </mat-form-field>
 
-<div [hidden]="!isLoading || hasError" class="loader"> Bezig met het ophalen van gegevens. Even geduld aub...<p><mat-spinner></mat-spinner></p></div>
-<div [hidden]="!hasError"> Een fout is opgetreden bij het ophalen van data, probeer het aub opnieuw.</div>
-<table [hidden]="isLoading || hasError"  *ngIf="personalPlanningViewModel">
-  <col>
-  <colgroup span="12"></colgroup>
+  <mat-form-field appearance="outline">
+    <mat-label>Tot en met</mat-label>
+    <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="endDate">
+    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="getMyCurrentPlanning()" [disabled]="isLoading || hasError">
+    Zoek planning
+  </button>
+
+  <button mat-raised-button color="primary" (click)="collapseAll()">
+    {{ areAllCollapsed ? 'Alles uitklappen' : 'Alles inklappen' }}
+  </button>
+</div>
+
+<div *ngIf="isLoading" class="loader">
+  <p>Bezig met het ophalen van gegevens...</p>
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="hasError" class="error">
+  <p>Er is een fout opgetreden bij het ophalen van data.</p>
+</div>
+
+<table *ngIf="!isLoading && !hasError && personalPlanningViewModel" class="planning-table">
   <thead class="ZuydPlanningHeader">
-  <tr>
-    <td align="center" rowspan="3">Klanten</td>
-    <td align="center" rowspan="3">Opdrachtleider</td>
-    <th [attr.colspan]="personalPlanningViewModel.totalAmountOfWeeks" scope="colgroup">Weken</th>
-  </tr>
-  <tr>
-  <ng-container  *ngFor="let year of personalPlanningViewModel.years; let i = index">
-  <th scope="col" [attr.colspan]="year.weeks.length">{{year.year}}</th>
-  </ng-container>
-  </tr>
-  <tr>
-    <ng-container  *ngFor="let year of personalPlanningViewModel.years; let i = index">
-      <ng-container  *ngFor="let week of year.weeks; let i = index">
-        <th scope="col">{{week.weeknumber}}<p class="xsFont">{{week.startOfWeekDay}}</p></th>
-      </ng-container>
-    </ng-container>
-  </tr>
-  </thead>
-  <tbody>
+    <tr>
+      <th rowspan="3" class="left-col sticky">Klanten</th>
+      <th rowspan="3" class="left-col sticky">Opdrachtleider</th>
 
-    <ng-container  *ngFor="let klant of personalPlanningViewModel.topRows; let i = index">
-      <tr>
-      <th align="left" class="boldTableHeader" scope="row">{{klant.naam}}
-        <a *ngIf="klant.expanded && klant.detailRows?.length > 0" (click)="klant.expanded = false"> <mat-icon class="qOrangeArrow">expand_less</mat-icon></a>
-        <a *ngIf="!klant.expanded && klant.detailRows?.length > 0" (click)="klant.expanded = true"> <mat-icon class="qGreenArrow">expand_more</mat-icon></a>
-      </th>
-        <th align="left" class="boldTableHeader smallFont" scope="row">{{klant.opdrachtleider}}
-        </th>
-        <ng-container  *ngFor="let planning of klant.planning; let i = index">
-          <td [ngClass]="{'qRed': planning.uren > 48 , 'qOrange':planning.uren < 32, 'qGreen':planning.uren >= 32 && planning.uren <= 48 }" align="center">{{planning.uren}}</td>
-        </ng-container>
-      </tr>
-      <ng-container  *ngFor="let medeMedewerkers of klant.detailRows; let i = index">
-      <tr *ngIf="klant.expanded" >
-        <th align="right" class="boldTableHeader smallFont" scope="row">{{medeMedewerkers.naam}} </th>
-        <th></th>
-        <ng-container  *ngFor="let planning of medeMedewerkers.planning; let i = index">
-          <td [ngClass]="{'qRed': planning.uren > 48 , 'qOrange':planning.uren < 32, 'qGreen':planning.uren >= 32 && planning.uren <= 48 }" class="smallFont" align="center">{{planning.uren}}</td>
-        </ng-container>
-      </tr>
+      <ng-container *ngFor="let year of personalPlanningViewModel.years">
+        <th [attr.colspan]="year.weeks.length" class="year-header sticky">{{ year.year }}</th>
       </ng-container>
+    </tr>
+
+    <tr>
+      <th [attr.colspan]="personalPlanningViewModel.totalAmountOfWeeks" class="week-header-top sticky">
+        Weken
+      </th>
+    </tr>
+
+    <tr>
+      <ng-container *ngFor="let year of personalPlanningViewModel.years">
+        <ng-container *ngFor="let week of year.weeks">
+          <th class="week-col sticky">
+            {{ week.weeknumber }}
+            <div class="week-date">{{ week.startOfWeekDay }}</div>
+          </th>
+        </ng-container>
+      </ng-container>
+    </tr>
+  </thead>
+
+  <tbody>
+    <ng-container *ngFor="let klant of personalPlanningViewModel.topRows">
+      <tr class="client-row" (mouseenter)="klant.hover=true" (mouseleave)="klant.hover=false">
+        <th class="boldTableHeader">
+          {{ klant.naam }}
+          <a *ngIf="klant.detailRows?.length" (click)="toggleExpand(klant)" class="toggle">
+            <mat-icon [ngClass]="klant.expanded ? 'qOrangeArrow' : 'qGreenArrow'">
+              {{ klant.expanded ? 'expand_less' : 'expand_more' }}
+            </mat-icon>
+          </a>
+        </th>
+        <th>{{ klant.opdrachtleider }}</th>
+        <ng-container *ngFor="let planning of klant.planning">
+          <td
+            [ngClass]="{
+              qRed: planning.uren > 48,
+              qOrange: planning.uren < 32,
+              qGreen: planning.uren >= 32 && planning.uren <= 48
+            }"
+          >
+            {{ planning.uren }}
+          </td>
+        </ng-container>
+      </tr>
+
+      <tr *ngFor="let medewerker of klant.detailRows" [hidden]="!klant.expanded" class="sub-row">
+        <th class="smallFont" align="right">{{ medewerker.naam }}</th>
+        <th></th>
+        <ng-container *ngFor="let planning of medewerker.planning">
+          <td
+            class="smallFont"
+            [ngClass]="{
+              qRed: planning.uren > 48,
+              qOrange: planning.uren < 32,
+              qGreen: planning.uren >= 32 && planning.uren <= 48
+            }"
+          >
+            {{ planning.uren }}
+          </td>
+        </ng-container>
+      </tr>
     </ng-container>
   </tbody>
 </table>
