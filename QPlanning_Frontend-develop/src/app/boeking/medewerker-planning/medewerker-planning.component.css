@@ -1,4 +1,10 @@
-table{
+@import url("../../home/planning-list/planning-list.component.css");
+
+th.boldTableHeader a{
+  cursor: pointer;
+}
+
+/* table{
   border: 1px solid black;
   border-collapse: collapse;
   border-spacing: 0;
@@ -55,9 +61,7 @@ p.xsFont {
   margin: 0;
 }
 
-th.boldTableHeader a{
-  cursor: pointer;
-}
+
 
 .mat-icon {
   font-size: 15px;
@@ -95,7 +99,7 @@ th.boldTableHeader.boldText{
 
 .loader ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
   stroke: #8aba87;
-}
+} */
 
 .icon-display {
   transform: scale(1);

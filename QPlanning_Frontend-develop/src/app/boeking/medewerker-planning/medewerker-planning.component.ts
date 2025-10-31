@@ -18,7 +18,7 @@ export class MedewerkerPlanningComponent implements OnInit {
   medewerkerDropDown: DropDown[];
   initialLoad: boolean;
   selectedTeamId: number;
-  selectedMedewerkerIds: number[];
+  selectedMedewerkerId: number;
   isLoading = false;
   hasError = false;
   areAllCollapsed = true;
@@ -49,6 +49,8 @@ export class MedewerkerPlanningComponent implements OnInit {
         const {teamDropDown, medewerkerDropDown, initialSelectedTeamId} = res;
         this.teamDropDown = teamDropDown;
         this.medewerkerDropDown = medewerkerDropDown;
+
+        
         if (this.initialLoad) {
           this.selectedTeamId = initialSelectedTeamId;
           this.initialLoad = false;
@@ -62,7 +64,7 @@ export class MedewerkerPlanningComponent implements OnInit {
       this.hasError = false;
       if (!this.selectedTeamId) { this.selectedTeamId = 0; }
       this.repoService.post('api/boeking/getMedewerkerBoekingWithinPeriod',
-        {endDate: this.endDate, startDate: this.startDate, teamId: this.selectedTeamId, medewerkerIds: this.selectedMedewerkerIds})
+        {endDate: this.endDate, startDate: this.startDate, teamId: this.selectedTeamId, medewerkerIds: this.selectedMedewerkerId})
         .subscribe(res => {
           // @ts-ignore
           this.personalPlanningViewModel = res.personalPlanningViewModel as personalPlanningViewModel;
@@ -88,7 +90,9 @@ export class MedewerkerPlanningComponent implements OnInit {
       return;
     }
   }
-
+  public onMedewerkerFilterChange() {
+    this.getMyCurrentPlanning();
+  } 
   public orderMedewerker() {
     if (this.nameOrderAsc) {
       this.personalPlanningViewModel.topRows.sort((a, b) => b.naam.localeCompare(a.naam));
