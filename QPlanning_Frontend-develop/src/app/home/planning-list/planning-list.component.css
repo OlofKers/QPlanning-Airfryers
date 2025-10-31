@@ -1,99 +1,192 @@
-table{
-  border: 1px solid black;
+.welcome-container {
+  padding: 16px 24px;
+  margin-bottom: 24px;
+}
+
+.welcome-container h2 {
+  margin: 0 0 4px 0;
+  font-weight: 700;
+  color: #333;
+  font-size: 1.6rem;
+}
+
+.welcome-container .subtext {
+  margin: 0;
+  color: #666;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+
+
+
+/*  Filters boven de tabel */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* 🔹 Filtergroep met datums + knoppen */
+.filter-group {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+
+/* 🔹 Knoppen naast de filters — hoogte fix */
+.filter-group button {
+  margin-bottom: 35px;
+  display: flex;
+  align-items: center;      
+  justify-content: center; 
+  min-height: 40px;        
+  padding: 0 20px;         
+}
+
+.button-right {
+  margin-left: auto;
+}
+
+/* 🔹 Algemene tabel */
+.planning-table {
+  width: 100%;
   border-collapse: collapse;
-  border-spacing: 0;
+  border: 1px solid #c8d3e0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 13px;
+  background-color: #ffffff;
+  table-layout: fixed;
 }
 
-thead td{
-  border: 1px dotted lightslategray;
-  font-weight: 500;
+/* 🔹 Sticky header */
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
-.ZuydPlanningHeader {
-  color: white;
+/* 🔹 Header styling */
+.ZuydPlanningHeader th {
+  border: 1px solid #b7c4d1;
   background-color: #85c4f0;
-}
-
-thead th {
-  border: 1px dotted lightslategray;
+  color: white;
+  text-align: center;
+  padding: 6px;
   font-weight: 500;
-  min-width: 25px;
 }
 
-tbody tr:first-child th:first-child{
-  border: 1px dotted lightslategray;
-  font-weight: bold;
+.year-header {
+  background-color: #6eb4e8;
 }
 
-tbody th{
-  border: 1px dotted lightslategray;
-  font-weight: normal;
+.week-col {
+  background-color: #58a7e0;
+  color: white;
+  min-width: 50px;
+  font-weight: 500;
 }
 
-tbody td{
-  border: 1px dotted lightslategray;
-  font-weight: normal;
+.week-date {
+  font-size: 10px;
+  color: #e7f2fc;
 }
 
-tbody tr:nth-child(odd){
-  background: #E0E8F2;
+/* 🔹 Rijen */
+tbody tr {
+  transition: background-color 0.2s ease-in-out;
 }
 
-tbody tr:first-child .overplanned{
-  color: red;
+tbody tr:nth-child(odd) {
+  background-color: #f7faff;
 }
 
-tbody tr:first-child .underplanned{
-  color: #ebbd64;
+tbody tr:nth-child(even) {
+  background-color: #ffffff;
 }
 
-tbody tr:first-child .perfect{
-  color: #8aba87;
+/* 🔹 Hover op klantregels */
+.client-row:hover {
+  background-color: #e9f2fa;
 }
 
+/* 🔹 Celopmaak */
+tbody th,
+tbody td {
+  border: 1px solid #b7c4d1;
+  padding: 5px;
+  text-align: center;
+}
+
+tbody th {
+  text-align: left;
+}
+
+/* 🔹 Subrijen */
+.sub-row {
+  background-color: #f1f5fb;
+}
+
+/* 🔹 Tekstformattering */
 .smallFont {
   font-size: 12px;
 }
 
-.xsFont{
-  font-size: 9px;
+.boldTableHeader {
+  font-weight: 600;
 }
 
-p.xsFont {
-  padding: 0;
-  margin: 0;
+/* 🔹 Kleuren uren */
+.qGreen {
+  color: #4caf50;
+  font-weight: 600;
 }
 
-th.boldTableHeader a{
+.qOrange {
+  color: #ff9800;
+  font-weight: 600;
+}
+
+.qRed {
+  color: #f44336;
+  font-weight: 600;
+}
+
+/* 🔹 Expand pijlen */
+.toggle {
   cursor: pointer;
-}
-
-.mat-icon {
-  font-size: 15px;
-  margin-bottom: -5px;
-}
-
-tbody tr:first-child .qGreen {
-  color: #8aba87;
-}
-
-tbody tr:first-child .qOrange {
-  color: #ebbd64;
-}
-
-tbody tr:first-child .qRed {
-  color: #EA6A6A;
+  margin-left: 5px;
 }
 
 .qGreenArrow {
-  color: #8aba87;
+  color: #4caf50;
 }
 
 .qOrangeArrow {
-  color: #ebbd64;
+  color: #ff9800;
 }
 
-.loader ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
-  stroke: #8aba87;
+/* 🔹 Loader en foutmelding */
+.loader,
+.error {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.loader p,
+.error p {
+  color: #555;
+}
+
+/* 🔹 Responsief gedrag */
+@media (max-width: 1000px) {
+  .planning-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }
 
