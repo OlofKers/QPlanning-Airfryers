@@ -13,10 +13,6 @@
         <mat-label>Zoek Gebruiker</mat-label>
         <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
       </mat-form-field>
-
-      <button mat-icon-button class="search-button" (click)="getAllBookingRecords()">
-        <mat-icon>search</mat-icon>
-      </button>
     </div>
 
 <table mat-table [dataSource]="dataSource" class="customTable-fullscreen" matSort>
